@@ -122,7 +122,6 @@ function UserBlogPage() {
   const handleCopy = () => {
     try {
       navigator.clipboard.writeText(window.location.href)
-      console.log('URL copied successfully!')
       setshowSuccessMSG(true)
       setCopyMSG('link copied success!')
       setTimeout(() => {
@@ -196,7 +195,7 @@ function UserBlogPage() {
               if (imageUrls && imageUrls[index]?.url) {
                 {
                   chunkCount++
-                  console.log(chunkCount)
+                  // console.log(chunkCount)
                 }
                 // Check if image exists for this paragraph
                 return (

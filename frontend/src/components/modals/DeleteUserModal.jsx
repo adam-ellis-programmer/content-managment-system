@@ -8,7 +8,10 @@ import {
 } from '../../features/admin/adminSlice'
 
 import { useRef, useEffect } from 'react'
+import useCheckDemoUser from '../../hooks/useCheckDemoUser'
 function DeleteUserModal() {
+  const { isDemo } = useCheckDemoUser()
+
   const deleteModal = useRef()
   useEffect(() => {
     const currentItem = deleteModal.current
@@ -28,6 +31,8 @@ function DeleteUserModal() {
   }
 
   const handleDelete = () => {
+    if (isDemo()) return
+
     const updatedUsers = users.filter((user) => user._id !== id)
     dispatch(setUsers(updatedUsers))
     dispatch(deleteUserAdmin(id))
@@ -53,48 +58,50 @@ function DeleteUserModal() {
     }
   }
   return (
-    <div tabIndex={-1} ref={deleteModal} className="delete-modal">
-      <div className="delete-modal-inner-div">
-        <div className="delete-modal-body">
-          <i className="fa-regular stop-sign fa-hand"></i>
+    <div tabIndex={-1} ref={deleteModal} className='delete-modal'>
+      <div className='delete-modal-inner-div'>
+        <div className='delete-modal-body'>
+          <i className='fa-regular stop-sign fa-hand'></i>
           <p>stop</p>
           <p>
             you are about to delete{' '}
-            <span className="user-to-delete-name">{userToDelete.name}</span>
+            <span className='user-to-delete-name'>{userToDelete.name}</span>
           </p>
           <p>are you sure you wish to continue?</p>
         </div>
 
-        <p className="user-delet-code-p">
-          copy & paste <span onClick={handleCopy}>{userToDelete.name} </span> to confirm
-          delete
+        <p className='user-delet-code-p'>
+          copy & paste <span onClick={handleCopy}>{userToDelete.name} </span> to
+          confirm delete
         </p>
-        <div className="delete-modal-input-container">
+        <div className='delete-modal-input-container'>
           <input
-            className="delete-modal-input"
-            type="text"
-            placeholder="enter delete code"
+            className='delete-modal-input'
+            type='text'
+            placeholder='enter delete code'
             onChange={handleDeleteCode}
             // disabled={true}
           />
         </div>
 
-        <div className="delete-modal-btn-container">
+        <div className='delete-modal-btn-container'>
           <button
             onClick={handleDelete}
-            className={`delete-modal-btn ${isDisabled && 'delte-btn-disabled '}`}
+            className={`delete-modal-btn ${
+              isDisabled && 'delte-btn-disabled '
+            }`}
             disabled={isDisabled}
           >
             delete
           </button>
           <button
             onClick={handleClose}
-            className=" delete-modal-btn close-delete-modal-btn"
+            className=' delete-modal-btn close-delete-modal-btn'
           >
             close
           </button>
         </div>
-        <div className="delete-code-div">
+        <div className='delete-code-div'>
           <p>{/* <span>{deleteCode}</span> */}</p>
         </div>
       </div>

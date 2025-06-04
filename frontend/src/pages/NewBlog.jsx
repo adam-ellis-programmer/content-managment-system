@@ -13,8 +13,10 @@ import NotAuthorized from '../components/NotAuthorized'
 import MobileBackBTN from '../components/MobileBackBTN'
 
 import { scrollTop } from '../utils'
+import useCheckDemoUser from '../hooks/useCheckDemoUser'
 
 function NewBlog() {
+  const { isDemo } = useCheckDemoUser()
   const imagesInputRef = useRef(null)
   const heroImageInputRef = useRef(null)
 
@@ -92,9 +94,10 @@ function NewBlog() {
   // }
 
   const onSubmit = async (e) => {
-    setLoading(true)
     e.preventDefault()
+    if (isDemo()) return
 
+    setLoading(true)
     const formData = new FormData()
 
     // Append text data
@@ -150,91 +153,91 @@ function NewBlog() {
   }
 
   return (
-    <div className="page-container new-blog-container">
+    <div className='page-container new-blog-container'>
       {loading && <Loading />}
-      <section className="new-blog-header">
+      <section className='new-blog-header'>
         <h1>welcome {name && name} </h1>
         <p>let's create a new blog</p>
       </section>
 
-      <section className="new-blog-grid-container">
-        <div className="content-box side-box">
-          <img className="new-blog-side-img" src={holdImg} alt="" />
+      <section className='new-blog-grid-container'>
+        <div className='content-box side-box'>
+          <img className='new-blog-side-img' src={holdImg} alt='' />
         </div>
-        <div className="content-box">
+        <div className='content-box'>
           <MobileBackBTN />
-          <section className="register-form-section new-blog-section">
-            <div className="holding-box"></div>
-            <div className="holding-box">
-              <form onSubmit={onSubmit} className="form new-blog-form">
-                <div className="form-group">
+          <section className='register-form-section new-blog-section'>
+            <div className='holding-box'></div>
+            <div className='holding-box'>
+              <form onSubmit={onSubmit} className='form new-blog-form'>
+                <div className='form-group'>
                   {/* LOOP THROUGH INPUTS DYNAMICLY */}
                   <input
-                    type="text"
-                    id="author"
+                    type='text'
+                    id='author'
                     value={user.name}
                     onChange={onChange}
-                    className="form-input"
-                    name="author"
-                    placeholder="Blog Author"
+                    className='form-input'
+                    name='author'
+                    placeholder='Blog Author'
                     disabled={true}
                     // required
                   />
                 </div>
-                <div className="form-group">
+                <div className='form-group'>
                   <input
-                    type="blogTitle"
-                    id="blogTitle"
+                    type='blogTitle'
+                    id='blogTitle'
                     value={blogTitle}
                     onChange={onChange}
-                    className="form-input"
-                    name="blogTitle"
-                    placeholder="Enter BlogTitle"
+                    className='form-input'
+                    name='blogTitle'
+                    placeholder='Enter BlogTitle'
                     // required
                   />
                 </div>
-                <div className="form-group">
+                <div className='form-group'>
                   <input
-                    type="text"
-                    id="country"
+                    type='text'
+                    id='country'
                     value={country}
                     onChange={onChange}
-                    className="form-input"
-                    name="country"
-                    placeholder="Enter Country"
-                    autoComplete="on"
+                    className='form-input'
+                    name='country'
+                    placeholder='Enter Country'
+                    autoComplete='on'
                     // required
                   />
                 </div>
 
-                <div className="form-group">
+                <div className='form-group'>
                   <textarea
-                    name="blogBody"
+                    name='blogBody'
                     onChange={onChange}
-                    id="blogBody"
+                    id='blogBody'
                     value={blogBody}
-                    className="form-input blog-input-body"
-                    placeholder="Blog Text"
+                    className='form-input blog-input-body'
+                    placeholder='Blog Text'
                   ></textarea>
                 </div>
 
-                <div className="form-group">
-                  <label className="check-form-control">
+                <div className='form-group'>
+                  <label className='check-form-control'>
                     <input
                       onChange={onChange}
-                      type="checkbox"
-                      name="featured"
+                      type='checkbox'
+                      name='featured'
                       value={false}
                       checked={featured}
                     />
                     featured
                   </label>
 
-                  <label className="check-form-control">
+                  <label className='check-form-control'>
                     <input
                       onChange={onChange}
-                      type="checkbox"
-                      name="publish"
+                      type='checkbox'
+                      name='publish'
                       value={false}
                       checked={publish}
                     />
@@ -243,19 +246,19 @@ function NewBlog() {
                 </div>
 
                 {/* <input className="file-input" type="file" name="files[]" multiple /> */}
-                <div className="form-group image-select-btn-wrap">
+                <div className='form-group image-select-btn-wrap'>
                   {/* Hidden file input for images */}
                   <input
-                    type="file"
-                    accept="image/*"
+                    type='file'
+                    accept='image/*'
                     multiple
                     ref={imagesInputRef}
                     style={{ display: 'none' }}
                     onChange={handleImagesChange}
                   />
                   <button
-                    type="button"
-                    className="select-images-btn"
+                    type='button'
+                    className='select-images-btn'
                     onClick={triggerImagesSelect}
                   >
                     Images
@@ -263,15 +266,15 @@ function NewBlog() {
 
                   {/* Hidden file input for hero image */}
                   <input
-                    type="file"
-                    accept="image/*"
+                    type='file'
+                    accept='image/*'
                     ref={heroImageInputRef}
                     style={{ display: 'none' }}
                     onChange={handleHeroImageChange}
                   />
                   <button
-                    type="button"
-                    className="select-images-btn"
+                    type='button'
+                    className='select-images-btn'
                     onClick={triggerHeroImageSelect}
                   >
                     Hero
@@ -282,7 +285,7 @@ function NewBlog() {
                       <h4>Selected Images:</h4>
                       <ul>
                         {images.map((file, index) => (
-                          <li className="file-li-item" key={index}>
+                          <li className='file-li-item' key={index}>
                             {file.name}
                           </li>
                         ))}
@@ -291,32 +294,34 @@ function NewBlog() {
                   )}
 
                   {heroImage && (
-                    <div className="file-li-item">
+                    <div className='file-li-item'>
                       <h4>Selected Hero Image:</h4>
                       <p>{heroImage.name}</p>
                     </div>
                   )}
                 </div>
 
-                <div className="form-group form-btn-container create-blog-btn-container">
+                <div className='form-group form-btn-container create-blog-btn-container'>
                   <button
                     onClick={handleClearForm}
-                    type="button"
-                    className="form-btn clear-blog-text-btn create-blog-btn"
+                    type='button'
+                    className='form-btn clear-blog-text-btn create-blog-btn'
                   >
                     clear all
                   </button>
-                  <button className="form-btn create-blog-btn">create blog</button>
+                  <button className='form-btn create-blog-btn'>
+                    create blog
+                  </button>
                 </div>
               </form>
               <MiddelCollumnAdvert />
             </div>
 
-            <div className="holding-box"></div>
+            <div className='holding-box'></div>
           </section>
         </div>
-        <div className="content-box side-box">
-          <img className="new-blog-side-img" src={holdImg2} alt="" />
+        <div className='content-box side-box'>
+          <img className='new-blog-side-img' src={holdImg2} alt='' />
         </div>
       </section>
     </div>

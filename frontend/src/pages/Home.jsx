@@ -8,7 +8,9 @@ import FeaturedBlogItem from '../components/FeaturedBlogItem'
 import HomeLoader from '../components/loaders/HomeLoader'
 
 import { scrollTop } from '../utils'
+import useCheckDemoUser from '../hooks/useCheckDemoUser'
 function Home() {
+  const { isDemo } = useCheckDemoUser()
   const dispatch = useDispatch()
   const { publicBlogs } = useSelector((state) => state.blogs)
   const { user } = useSelector((state) => state.auth)

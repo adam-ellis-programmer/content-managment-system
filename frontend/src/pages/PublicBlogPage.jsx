@@ -77,7 +77,7 @@ function PublicBlogPage() {
 
   const [wordCount, setWordCount] = useState(100)
 
-  // console.log(blogBody && blogBody.split(' '))
+
   useEffect(() => {
     dispatch(getPublicBlog(blogID))
       .unwrap()

@@ -7,8 +7,11 @@ import {
   setAdminBlogs,
   deleteAllImages,
 } from '../../features/blog/blogSlice'
+import useCheckDemoUser from '../../hooks/useCheckDemoUser'
 
 function DeleteBlogModalAdmin({ loading, setLoading, setIsDeleting }) {
+  const { isDemo } = useCheckDemoUser()
+
   const deleteModal = useRef(null)
   useEffect(() => {
     const delElement = deleteModal.current
@@ -32,7 +35,6 @@ function DeleteBlogModalAdmin({ loading, setLoading, setIsDeleting }) {
   }
 
   const handleDeleteCode = (e) => {
-    console.log(e.target.value)
     if (e.target.value.trim() === deleteCode) {
       setisDisabled(false)
     } else {
@@ -44,6 +46,7 @@ function DeleteBlogModalAdmin({ loading, setLoading, setIsDeleting }) {
   const filteredData = adminBlogs.filter((item) => item._id !== blogID)
 
   const handleDelete = async () => {
+    if (isDemo()) return
     try {
       setLoading(true)
       setIsDeleting(true)
@@ -65,40 +68,42 @@ function DeleteBlogModalAdmin({ loading, setLoading, setIsDeleting }) {
   }
 
   return (
-    <div ref={deleteModal} tabIndex={-1} className="delete-modal">
-      <div className="delete-modal-inner-div">
-        <div className="delete-modal-body">
-          <i className="fa-regular stop-sign fa-hand"></i>
+    <div ref={deleteModal} tabIndex={-1} className='delete-modal'>
+      <div className='delete-modal-inner-div'>
+        <div className='delete-modal-body'>
+          <i className='fa-regular stop-sign fa-hand'></i>
           <p>stop</p>
           <p> you are about to delete this blog</p>
           <p>are you sure you wish to continue?</p>
         </div>
 
-        <p className="delete-code-p">
-          please copy and paste <span>{deleteCode}</span> to cofirm delete
+        <p className='delete-code-p'>
+          please enter: <span>{deleteCode}</span> to cofirm delete
         </p>
 
-        <div className="delete-modal-input-container">
+        <div className='delete-modal-input-container'>
           <input
-            className="delete-modal-input"
-            type="text"
-            placeholder="enter delete code"
+            className='delete-modal-input'
+            type='text'
+            placeholder='enter delete code'
             onChange={handleDeleteCode}
             // disabled={true}
           />
         </div>
 
-        <div className="delete-modal-btn-container">
+        <div className='delete-modal-btn-container'>
           <button
             onClick={handleDelete}
-            className={`delete-modal-btn ${isDisabled && 'delte-btn-disabled '}`}
+            className={`delete-modal-btn ${
+              isDisabled && 'delte-btn-disabled '
+            }`}
             disabled={isDisabled}
           >
             delete
           </button>
           <button
             onClick={handleClose}
-            className=" delete-modal-btn close-delete-modal-btn"
+            className=' delete-modal-btn close-delete-modal-btn'
           >
             close
           </button>

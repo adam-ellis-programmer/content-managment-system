@@ -17,28 +17,13 @@ import PageLoader from '../components/loaders/PageLoader'
 import MobileBackBTN from '../components/MobileBackBTN'
 import NoDataPlaceHolder from '../components/place holder components/NoDataPlaceHolder'
 import GlobalPageLoader from '../components/loaders/GlobalPageLoader'
+import useCheckDemoUser from '../hooks/useCheckDemoUser'
 
 function Tasks() {
+  const { isDemo } = useCheckDemoUser()
+
   const [taskFocus, setTaskFocus] = useState(null)
   const [loading, setLoading] = useState(true)
-
-  // prettier-ignore
-  // useEffect(() => {
-  //   // ************************* LEAVE IN FOR REFERENCE AND TESTING ************************* //
-  //   if (taskFocus) {
-  //     const focusListItem = async () => {
-  //       await new Promise((resolve) => setTimeout(resolve, 100));
-  //       const lisItem = document.querySelector(`.task-list-item[data-id="${taskFocus.item._id}"]`);
-  //       // console.log('lisItem:', lisItem); // Check if element is found
-  //       if (lisItem) {
-  //         lisItem.focus();
-  //         // console.log('Focused:', lisItem); // Check if focus is successful
-  //       }
-  //     };
-
-  //     focusListItem();
-  //   }
-  // }, [taskFocus]);
 
   const { tasks, showDeleteModal, taskItem, isEditMode } = useSelector(
     (state) => state.tasks
@@ -96,6 +81,9 @@ function Tasks() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    if (isDemo()) return
+
     // isEdit flag
     if (!isEditMode) {
       // task text will be the global state set to '' .taskText dotTaskText
@@ -114,6 +102,8 @@ function Tasks() {
         })
         .catch(toast.error)
     } else {
+      // ---------------  if edit mode run this --------------------
+      if (isDemo()) return
       // update the db
       const updatedTaskData = {
         taskText,
@@ -185,36 +175,36 @@ function Tasks() {
 
   return (
     <>
-      <div className="page-container tasks-container">
-        <div className="back-btn-wrap">
+      <div className='page-container tasks-container'>
+        <div className='back-btn-wrap'>
           <BackButton />
         </div>
-        <div className="back-btn-wrap-mobile">
+        <div className='back-btn-wrap-mobile'>
           <MobileBackBTN />
         </div>
-        <section className="tasks-head-section">
+        <section className='tasks-head-section'>
           {showDeleteModal && <DeleteTaskModal />}
           <p>your tasks list</p>
           <p>keep track of all your tasks here in one place</p>
-          <p className="logged-in-as tasks-logged-in-as">
+          <p className='logged-in-as tasks-logged-in-as'>
             <span>logged in as {user.name}</span>
           </p>
         </section>
 
-        <section className="task-input-section">
-          <form onSubmit={handleSubmit} className="task-form">
+        <section className='task-input-section'>
+          <form onSubmit={handleSubmit} className='task-form'>
             {/* <span>{taskText.length}</span> */}
-            <div className="task-form-group">
+            <div className='task-form-group'>
               <input
                 onChange={onChange}
-                type="text"
-                className="task-input"
-                placeholder="enter task"
-                name="taskText"
+                type='text'
+                className='task-input'
+                placeholder='enter task'
+                name='taskText'
                 value={taskText.slice(0, taskLength)}
               />
             </div>
-            <div className="task-length-div">
+            <div className='task-length-div'>
               <div>
                 <span> max chars:</span> <span>40</span>
               </div>
@@ -227,44 +217,46 @@ function Tasks() {
               </div>
             </div>
 
-            <label className="check-form-control task-form-control">
+            <label className='check-form-control task-form-control'>
               <input
                 onChange={onChange}
-                type="checkbox"
-                name="important"
+                type='checkbox'
+                name='important'
                 value={false}
                 checked={important}
               />
               important
             </label>
 
-            <button className="task-submit-btn">
+            <button className='task-submit-btn'>
               {isEditMode ? 'update' : 'submit'}
             </button>
           </form>
-          <div className="task-search-container">
+          <div className='task-search-container'>
             <input
               onChange={handleSearch}
-              className="task-search-input"
-              type="text"
-              placeholder="search tasks"
+              className='task-search-input'
+              type='text'
+              placeholder='search tasks'
             />
           </div>
           {isEditMode && (
-            <button onClick={handleExitEditMode} className="cancel-update">
+            <button onClick={handleExitEditMode} className='cancel-update'>
               exit edit mode
             </button>
           )}
         </section>
 
-        <section className="tasks-list-section">
-          <div className="task-list-header">
+        <section className='tasks-list-section'>
+          <div className='task-list-header'>
             <div>date of task</div>
             <div>task text</div>
             <div>status</div>
             <div>controls</div>
           </div>
-          {tasks && tasks.length < 1 && <NoDataPlaceHolder data={{ page: 'tasks' }} />}
+          {tasks && tasks.length < 1 && (
+            <NoDataPlaceHolder data={{ page: 'tasks' }} />
+          )}
 
           <ul>
             {tasks &&

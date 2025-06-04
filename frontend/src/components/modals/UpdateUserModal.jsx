@@ -8,10 +8,15 @@ import {
   setUsers,
   updateUserAdmin,
 } from '../../features/admin/adminSlice'
+import useCheckDemoUser from '../../hooks/useCheckDemoUser'
 function UpdateUserModal() {
+  const { isDemo } = useCheckDemoUser()
+
   const [user, setUser] = useState({})
   const dispatch = useDispatch()
-  const { toggleUpdateModal, userID, users } = useSelector((state) => state.admin)
+  const { toggleUpdateModal, userID, users } = useSelector(
+    (state) => state.admin
+  )
   const { user: loggedInUser } = useSelector((state) => state.auth)
 
   const [formData, setFormData] = useState({
@@ -55,6 +60,9 @@ function UpdateUserModal() {
 
   const onSubmit = (e) => {
     e.preventDefault()
+
+    if (isDemo()) return
+
     const dataUpdate = {
       ...user,
       name,
@@ -66,7 +74,9 @@ function UpdateUserModal() {
     dispatch(updateUserAdmin({ id: userID, data: dataUpdate }))
 
     // update the UI
-    const updatedData = users.map((user) => (user._id === userID ? dataUpdate : user))
+    const updatedData = users.map((user) =>
+      user._id === userID ? dataUpdate : user
+    )
     dispatch(setUsers(updatedData))
   }
 
@@ -80,75 +90,75 @@ function UpdateUserModal() {
     }
   }
   return (
-    <div className="modal-container">
-      <div className="modal">
-        <h3 className="admin-h3 admin-user-h3">
+    <div className='modal-container'>
+      <div className='modal'>
+        <h3 className='admin-h3 admin-user-h3'>
           <span>update user admin controls</span>
         </h3>
 
-        <button onClick={handleClose} className="close-modal-btn">
+        <button onClick={handleClose} className='close-modal-btn'>
           cancel
         </button>
-        <div className="modal-body">
+        <div className='modal-body'>
           <form onSubmit={onSubmit}>
-            <div className="admin-controls-div">
-              <label className=" admin-check-label">
+            <div className='admin-controls-div'>
+              <label className=' admin-check-label'>
                 <input
-                  className="admin-check"
+                  className='admin-check'
                   onChange={onMutate}
-                  type="checkbox"
-                  name="isSuspended"
-                  id="isSuspended"
+                  type='checkbox'
+                  name='isSuspended'
+                  id='isSuspended'
                   value={false}
                   checked={isSuspended}
                   disabled={isDisabled()}
                 />
                 suspended
               </label>
-              <label className=" admin-check-label">
+              <label className=' admin-check-label'>
                 <input
-                  className="admin-check"
+                  className='admin-check'
                   onChange={onMutate}
-                  type="checkbox"
-                  name="isAdmin"
-                  id="isAdmin"
+                  type='checkbox'
+                  name='isAdmin'
+                  id='isAdmin'
                   value={false}
                   checked={isAdmin}
                 />
                 admin
               </label>
             </div>
-            <div className="modal-form-control">
-              <label className="update-label" htmlFor="name">
+            <div className='modal-form-control'>
+              <label className='update-label' htmlFor='name'>
                 User Name
               </label>
               <input
-                id="name"
-                name="name"
-                type="text"
-                className="modal-input"
-                placeholder="Enter Name"
+                id='name'
+                name='name'
+                type='text'
+                className='modal-input'
+                placeholder='Enter Name'
                 value={name}
                 onChange={onMutate}
               />
             </div>
-            <div className="modal-form-control">
-              <label className="update-label" htmlFor="userEmail">
+            <div className='modal-form-control'>
+              <label className='update-label' htmlFor='userEmail'>
                 User Email
               </label>
               <input
-                id="email"
-                name="email"
-                type="text"
-                className="modal-input"
-                placeholder="Enter Email"
+                id='email'
+                name='email'
+                type='text'
+                className='modal-input'
+                placeholder='Enter Email'
                 value={email}
                 onChange={onMutate}
               />
             </div>
 
-            <div className="modal-form-control update-modal-btn-container">
-              <button className="update-modal-btn">update as adnin</button>
+            <div className='modal-form-control update-modal-btn-container'>
+              <button className='update-modal-btn'>update as adnin</button>
             </div>
           </form>
         </div>

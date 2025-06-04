@@ -12,16 +12,20 @@ const initialState = {
   message: '',
   showAlert: false,
   isError: false,
+  globalAlert: false,
 }
 
-export const register = createAsyncThunk('auth/register', async (user, thunkAPI) => {
-  try {
-    console.log(user)
-    return await authService.register(user)
-  } catch (error) {
-    return thunkAPI.rejectWithValue(extractErrorMessage(error))
+export const register = createAsyncThunk(
+  'auth/register',
+  async (user, thunkAPI) => {
+    try {
+      console.log(user)
+      return await authService.register(user)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error))
+    }
   }
-})
+)
 export const registerAsAdnin = createAsyncThunk(
   'auth/register/admin/new',
   async (user, thunkAPI) => {
@@ -70,6 +74,11 @@ export const authSlice = createSlice({
       authService.logout()
       state.user = null
     },
+
+    setGlobalAlert: (state, action) => {
+      // console.log('ACTION FROM SLICE', action)
+      state.globalAlert = action.payload
+    },
   },
 
   extraReducers: (builder) => {
@@ -114,6 +123,9 @@ export const authSlice = createSlice({
   },
 })
 
-export const { reset, setShowAlert, updateUSerState, logout } = authSlice.actions //<-- regular reducers
+export const { reset, setShowAlert, updateUSerState, logout, setGlobalAlert } =
+  authSlice.actions //<-- regular reducers
 
 export default authSlice.reducer
+
+export const selectShowAlert = (state) => state.auth.globalAlert

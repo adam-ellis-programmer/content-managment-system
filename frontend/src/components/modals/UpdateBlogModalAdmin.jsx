@@ -7,7 +7,10 @@ import {
   updateBlogAdmin,
   resetAdminBlog,
 } from '../../features/blog/blogSlice'
+import useCheckDemoUser from '../../hooks/useCheckDemoUser'
+
 function UpdateBlogModalAdmin() {
+  const { isDemo } = useCheckDemoUser()
   const dispatch = useDispatch()
   const { showUpdateModal, blogID, adminBlog, adminBlogs } = useSelector(
     (state) => state.blogs
@@ -22,7 +25,8 @@ function UpdateBlogModalAdmin() {
     suspended: false,
     featured: false,
   })
-  const { blogTitle, author, blogBody, publish, suspended, featured, country } = formData
+  const { blogTitle, author, blogBody, publish, suspended, featured, country } =
+    formData
 
   useEffect(() => {
     dispatch(getBlogAdmin(blogID))
@@ -58,6 +62,7 @@ function UpdateBlogModalAdmin() {
 
   const onSubmit = (e) => {
     e.preventDefault()
+    if (isDemo()) return
     dispatch(
       updateBlogAdmin({
         id: blogID,
@@ -89,7 +94,9 @@ function UpdateBlogModalAdmin() {
     }
 
     // update the UI
-    const data = adminBlogs.map((item) => (item._id === blogID ? updatedData : item))
+    const data = adminBlogs.map((item) =>
+      item._id === blogID ? updatedData : item
+    )
 
     dispatch(toggleUpdateModal(false))
     dispatch(resetAdminBlog())
@@ -97,113 +104,113 @@ function UpdateBlogModalAdmin() {
   }
 
   return (
-    <div className="modal-container">
-      <div className="modal">
-        <h3 className="admin-h3">
+    <div className='modal-container'>
+      <div className='modal'>
+        <h3 className='admin-h3'>
           <span>admin controls</span>
         </h3>
 
-        <button onClick={handleClose} className="close-modal-btn">
+        <button onClick={handleClose} className='close-modal-btn'>
           cancel
         </button>
-        <div className="modal-body">
+        <div className='modal-body'>
           <form onSubmit={onSubmit}>
-            <div className="admin-controls-div">
-              <label className=" admin-check-label">
+            <div className='admin-controls-div'>
+              <label className=' admin-check-label'>
                 <input
-                  className="admin-check"
+                  className='admin-check'
                   onChange={onMutate}
-                  type="checkbox"
-                  name="featured"
-                  id="featured"
+                  type='checkbox'
+                  name='featured'
+                  id='featured'
                   value={featured}
                   checked={featured}
                 />
                 featured
               </label>
 
-              <label className=" admin-check-label">
+              <label className=' admin-check-label'>
                 <input
-                  className="admin-check"
+                  className='admin-check'
                   onChange={onMutate}
-                  type="checkbox"
-                  name="publish"
-                  id="publish"
+                  type='checkbox'
+                  name='publish'
+                  id='publish'
                   value={publish}
                   checked={publish}
                 />
                 publish
               </label>
-              <label className=" admin-check-label">
+              <label className=' admin-check-label'>
                 <input
-                  className="admin-check"
+                  className='admin-check'
                   onChange={onMutate}
-                  type="checkbox"
-                  name="suspended"
-                  id="suspended"
+                  type='checkbox'
+                  name='suspended'
+                  id='suspended'
                   value={suspended}
                   checked={suspended}
                 />
                 suspended
               </label>
             </div>
-            <div className="modal-form-control">
-              <label className="update-label" htmlFor="blogTitle">
+            <div className='modal-form-control'>
+              <label className='update-label' htmlFor='blogTitle'>
                 Blog Title
               </label>
               <input
-                id="blogTitle"
-                name="blogTitle"
-                type="text"
-                className="modal-input"
-                placeholder="blog title"
+                id='blogTitle'
+                name='blogTitle'
+                type='text'
+                className='modal-input'
+                placeholder='blog title'
                 value={blogTitle}
                 onChange={onMutate}
               />
             </div>
-            <div className="modal-form-control">
-              <label className="update-label" htmlFor="author">
+            <div className='modal-form-control'>
+              <label className='update-label' htmlFor='author'>
                 Blog Author
               </label>
               <input
-                id="author"
-                name="author"
-                type="text"
-                className="modal-input"
-                placeholder="blog author"
+                id='author'
+                name='author'
+                type='text'
+                className='modal-input'
+                placeholder='blog author'
                 value={author}
                 onChange={onMutate}
               />
             </div>
-            <div className="modal-form-control">
-              <label className="update-label" htmlFor="author">
+            <div className='modal-form-control'>
+              <label className='update-label' htmlFor='author'>
                 Country
               </label>
               <input
-                id="country"
-                name="country"
-                type="text"
-                className="modal-input"
-                placeholder="blog country"
+                id='country'
+                name='country'
+                type='text'
+                className='modal-input'
+                placeholder='blog country'
                 value={country}
                 onChange={onMutate}
               />
             </div>
-            <div className="modal-form-control">
-              <label className="update-label" htmlFor="blogBody">
+            <div className='modal-form-control'>
+              <label className='update-label' htmlFor='blogBody'>
                 Blog Body
               </label>
               <textarea
-                id="blogBody"
-                name="blogBody"
-                className="modal-text-area admin-text-area"
+                id='blogBody'
+                name='blogBody'
+                className='modal-text-area admin-text-area'
                 value={blogBody}
                 onChange={onMutate}
               ></textarea>
             </div>
 
-            <div className="modal-form-control update-modal-btn-container">
-              <button className="update-modal-btn">update as adnin</button>
+            <div className='modal-form-control update-modal-btn-container'>
+              <button className='update-modal-btn'>update as adnin</button>
             </div>
           </form>
         </div>

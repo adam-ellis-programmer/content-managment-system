@@ -26,47 +26,53 @@ import Ask from './pages/Ask'
 import MessagesPage from './pages/MessagesPage'
 import Terms from './pages/Terms'
 import NotFound from './pages/NotFound'
+import GlobalAlert from './components/alerts/GlobalAlert'
+import { selectShowAlert } from './features/auth/authSlice'
+import { useSelector } from 'react-redux'
 
 function App() {
+  const showAlert = useSelector(selectShowAlert)
+
   return (
     <>
       <Router>
-        <div className="container">
+        <div className='container global-container'>
+          {showAlert && <GlobalAlert />}
           <Header />
           <Routes>
             {/* Public Routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/register" element={<Register2 />} />
-            <Route path="/sign-in" element={<SignIn2 />} />
-            <Route path="/faqs" element={<FAQS />} />
-            <Route path="/ask" element={<Ask />} />
-            <Route path="/terms" element={<Terms />} />
+            <Route path='/' element={<Home />} />
+            <Route path='/register' element={<Register2 />} />
+            <Route path='/sign-in' element={<SignIn2 />} />
+            <Route path='/faqs' element={<FAQS />} />
+            <Route path='/ask' element={<Ask />} />
+            <Route path='/terms' element={<Terms />} />
 
             {/* Private Routes */}
             <Route element={<PrivateRoute />}>
-              <Route path="/new-blog" element={<NewBlog />} />
-              <Route path="/user-blogs" element={<UserBlogs />} />
-              <Route path="/user-blog/:blogID" element={<UserBlogPage />} />
-              <Route path="/tasks" element={<Tasks />} />
-              <Route path="/manage-images/:blogID" element={<ManageImages />} />
-              <Route path="/my-account" element={<MyAccount />} />
-              <Route path="/public-blog/:blogID" element={<PublicBlogPage />} />
+              <Route path='/new-blog' element={<NewBlog />} />
+              <Route path='/user-blogs' element={<UserBlogs />} />
+              <Route path='/user-blog/:blogID' element={<UserBlogPage />} />
+              <Route path='/tasks' element={<Tasks />} />
+              <Route path='/manage-images/:blogID' element={<ManageImages />} />
+              <Route path='/my-account' element={<MyAccount />} />
+              <Route path='/public-blog/:blogID' element={<PublicBlogPage />} />
             </Route>
 
             {/* Admin Routes */}
-            <Route path="/admin-dash" element={<AdminDash />} />
-            <Route path="/admin-blogs" element={<Admin />} />
-            <Route path="/admin-users" element={<AdminUsers />} />
-            <Route path="/email-page" element={<ViewEmails />} />
-            <Route path="/view-sent-emails" element={<ViewSentEmailsPage />} />
+            <Route path='/admin-dash' element={<AdminDash />} />
+            <Route path='/admin-blogs' element={<Admin />} />
+            <Route path='/admin-users' element={<AdminUsers />} />
+            <Route path='/email-page' element={<ViewEmails />} />
+            <Route path='/view-sent-emails' element={<ViewSentEmailsPage />} />
             <Route
-              path="/view-sent-email-data-page/:id"
+              path='/view-sent-email-data-page/:id'
               element={<ViewSentEmailDataPage />}
             />
-            <Route path="/admin-new-blog" element={<CreateBlogAdmin />} />
+            <Route path='/admin-new-blog' element={<CreateBlogAdmin />} />
 
             {/* Catch-All Route */}
-            <Route path="/*" element={<NotFound />} />
+            <Route path='/*' element={<NotFound />} />
           </Routes>
           <Footer />
         </div>

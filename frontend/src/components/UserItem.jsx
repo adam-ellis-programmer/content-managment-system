@@ -6,6 +6,7 @@ import {
   setUserToDelete,
   setToggleDeleteUserModal,
 } from '../features/admin/adminSlice'
+import useCheckDemoUser from '../hooks/useCheckDemoUser'
 // user item is table data for the users table display
 function UserItem({
   user: {
@@ -21,6 +22,8 @@ function UserItem({
   index,
 }) {
   const { toggleUpdateModal } = useSelector((state) => state.admin)
+  const { isDemo } = useCheckDemoUser()
+
   const { user } = useSelector((state) => state.auth)
   const { users, showDeleteUserModal } = useSelector((state) => state.admin)
 
@@ -36,6 +39,8 @@ function UserItem({
   // --> more consise way of updating as it keeps the keys the same
   // --> return a new object
   const handleSuspend = (id) => {
+    
+    if (isDemo()) return  
       const user = users.find((item) => item._id === id )
 
     const updatedData = {
@@ -52,7 +57,9 @@ function UserItem({
 
   // compute the class
   const getSuspendButtonClass = (id) => {
-    return `user-item-btn ${isSuspended && 'suspended'}  ${id === currentUser && 'grey'}`
+    return `user-item-btn ${isSuspended && 'suspended'}  ${
+      id === currentUser && 'grey'
+    }`
   }
 
   // compute the class
@@ -60,7 +67,7 @@ function UserItem({
     return `user-item-btn ${id === currentUser && 'grey'}`
   }
 
-  // safre guard so cannot delete your self
+  // sage guard so cannot delete your self
   const handleDisabled = (id) => {
     if (id === currentUser) {
       return true
@@ -79,53 +86,53 @@ function UserItem({
   }
 
   return (
-    <div className="user-item">
-      <div className="user-item-div user-item-admin-div">
-        {isAdmin && <i className=" admin-icon-2 fa-solid fa-user-tie"></i>}
+    <div className='user-item'>
+      <div className='user-item-div user-item-admin-div'>
+        {isAdmin && <i className=' admin-icon-2 fa-solid fa-user-tie'></i>}
       </div>
-      <div className="user-item-div">
-        <span className="mobile-label-user">item number</span>
+      <div className='user-item-div'>
+        <span className='mobile-label-user'>item number</span>
         {
-          <div className="is-admin-div">
+          <div className='is-admin-div'>
             {/* not needed leave for reference   */}
             {/* {isAdmin && <i className=" admin-icon-2 fa-solid fa-user-tie"></i>} */}
           </div>
         }{' '}
         <p> {index + 1}</p>
       </div>
-      <div className="user-item-div">
-        <span className="mobile-label-user">user suspended</span>
+      <div className='user-item-div'>
+        <span className='mobile-label-user'>user suspended</span>
         <p>
           {' '}
           {isSuspended ? (
-            <i className=" check-mark fa-solid fa-check"></i>
+            <i className=' check-mark fa-solid fa-check'></i>
           ) : (
-            <i className=" un-check-mark fa-solid fa-xmark"></i>
+            <i className=' un-check-mark fa-solid fa-xmark'></i>
           )}
         </p>
       </div>
-      <div className="user-item-div">
-        <span className="mobile-label-user">signup date</span>
+      <div className='user-item-div'>
+        <span className='mobile-label-user'>signup date</span>
         <p> {new Date(createdAt).toLocaleString('en-gb')}</p>
       </div>
-      <div className="last-login-div user-item-div">
-        <span className="mobile-label-user">Last login date and time</span>
-        <p className="user-item-p">
+      <div className='last-login-div user-item-div'>
+        <span className='mobile-label-user'>Last login date and time</span>
+        <p className='user-item-p'>
           <span> {lastLoginDate}</span>
         </p>
-        <p className="user-item-p">{lastLoginTime}</p>
+        <p className='user-item-p'>{lastLoginTime}</p>
       </div>
-      <div className="user-item-div">
-        <span className="mobile-label-user">user name </span>
+      <div className='user-item-div'>
+        <span className='mobile-label-user'>user name </span>
         <p>{name}</p>
       </div>
-      <div className="user-item-div">
-        <span className="mobile-label-user">user email </span>
+      <div className='user-item-div'>
+        <span className='mobile-label-user'>user email </span>
         <p>{email}</p>
         {/* <p> {new Date(createdAt).toLocaleString('en-gb')}</p> */}
       </div>
-      <div className="user-admin-btn-container">
-        <button onClick={() => handleUpdate(_id)} className="user-item-btn">
+      <div className='user-admin-btn-container'>
+        <button onClick={() => handleUpdate(_id)} className='user-item-btn'>
           update
         </button>
         <button

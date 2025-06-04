@@ -99,6 +99,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // @ access public
 // prettier-ignore
 const loginUser = asyncHandler(async (req, res) => {
+
   const { email, password } = req.body
 
   if(!email){
@@ -145,6 +146,7 @@ const loginUser = asyncHandler(async (req, res) => {
       newLogins: 3,
       dob: user.dob,
       avatar: user.avatar,
+      isDemoUser: user.demoUser
     }
     res.status(200).json(resData)                                
     // console.log('hello user',user)         
@@ -253,7 +255,10 @@ const changePassword = asyncHandler(async (req, res) => {
     throw new Error('Please enter old and new passwords')
   }
 
-  if (loggedInUser && !(await bcrypt.compare(oldPassWord, loggedInUser.password))) {
+  if (
+    loggedInUser &&
+    !(await bcrypt.compare(oldPassWord, loggedInUser.password))
+  ) {
     res.status(401)
     throw new Error('old password is incorrect')
   }
@@ -468,7 +473,9 @@ const getAllUsersAdmin = asyncHandler(async (req, res) => {
   // check if is admin and not suspended
   if (user.isAdmin === false) {
     res.status(400)
-    throw new Error('Adnin area only - you do not have permisión to access this area')
+    throw new Error(
+      'Adnin area only - you do not have permisión to access this area'
+    )
   }
 
   if (user.isSuspended === true) {
