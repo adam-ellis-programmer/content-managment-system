@@ -51,7 +51,6 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, '../frontend', 'build', 'index.html'))
   )
 } else {
-  // // rest
   app.get('/', (req, res) => {
     res.json({ msg: 'API IS RUNNING ...this is the dev server' })
   })
@@ -59,4 +58,4 @@ if (process.env.NODE_ENV === 'production') {
 
 app.listen(PORT, () => console.log('server started on port ', PORT))
 
-module.exports = app;
+module.exports = app
