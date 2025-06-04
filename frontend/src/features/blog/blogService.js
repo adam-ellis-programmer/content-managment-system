@@ -10,7 +10,7 @@ const DELETE_IMG = API_BASE_URL + '/api/blogs/delete-img'
 const UPDATE_IMG = API_BASE_URL + '/api/blogs/update-img'
 const ADD_IMGS_BULK = API_BASE_URL + '/api/blogs/update-imgs/bulk'
 const DELETE_IMGS_BULK = API_BASE_URL + '/api/blogs/delete-imgs/bulk'
-
+z
 const createBlog = async (blogData, token) => {
   const config = {
     headers: {
