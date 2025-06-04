@@ -56,6 +56,10 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
-app.listen(PORT, () => console.log('server started on port ', PORT))
-
+// Export BEFORE listen
 module.exports = app
+
+// Only listen when running locally
+if (require.main === module) {
+  app.listen(PORT, () => console.log('server started on port ', PORT))
+}
