@@ -1,9 +1,17 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
+  "buildCommand": "cd frontend && PUBLIC_URL=. npm run build",
   "outputDirectory": "frontend/build",
-  "installCommand": "npm install && npm install --prefix frontend",
+  "installCommand": "npm install --prefix frontend",
   "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot))",
+      "dest": "/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "/index.html"
