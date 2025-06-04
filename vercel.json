@@ -19,11 +19,11 @@
       "dest": "/backend/server.js"
     },
     {
-      "src": "/static/(.*)",
+      "src": "^/static/(.*)",
       "dest": "/frontend/build/static/$1"
     },
     {
-      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg))",
+      "src": "^/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot))$",
       "dest": "/frontend/build/$1"
     },
     {
