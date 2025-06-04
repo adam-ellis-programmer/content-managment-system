@@ -6,7 +6,7 @@ const getBaseURL = () => {
   }
 
   // In production, use your deployed backend URL
-  return process.env.REACT_APP_API_URL || 'https://your-app-name.vercel.app'
+  return process.env.REACT_APP_API_URL || 'https://content-managment-system-lake.vercel.app'
 }
-
+ 
 export const API_BASE_URL = getBaseURL()
