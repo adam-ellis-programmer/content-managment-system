@@ -202,8 +202,10 @@ const getMe = asyncHandler(async (req, res) => {
     featuredBlogs: featuredBlogs.length,
     dob: loggedInUser.dob,
     avatar: loggedInUser.avatar,
+    demoUser: loggedInUser.demoUser,
   }
 
+  console.log(loggedInUser)
   res.status(200).json(user)
 })
 

@@ -52,7 +52,7 @@ function MyAccount() {
     scrollTop()
     return () => {}
   }, [])
-
+  console.log(user)
   // on page load
   useEffect(() => {
     const getData = async () => {
@@ -187,6 +187,7 @@ function MyAccount() {
   }
 
   const handleImageChange = () => {
+    if (isDemo()) return
     if (fileInputRef.current) {
       fileInputRef.current.click()
     }
@@ -252,6 +253,7 @@ function MyAccount() {
               <p>sign up time: </p>
               <p>last updated date: </p>
               <p>last updated time: </p>
+              <p>is demo user: </p>
             </div>
 
             <div className='my-account-user-inner-div'>
@@ -304,22 +306,26 @@ function MyAccount() {
 
               <p>
                 <span className='my-acc-span'>sign up date</span>
-                {new Date(user.createdAt).toLocaleString('en-GB').slice(0, 10)}
+                {new Date(user?.createdAt).toLocaleString('en-GB').slice(0, 10)}
               </p>
 
               <p>
                 <span className='my-acc-span'>sign up time</span>
-                {new Date(user.createdAt).toLocaleString('en-GB').slice(11)}
+                {new Date(user?.createdAt).toLocaleString('en-GB').slice(11)}
               </p>
               {/* last updated */}
               <p>
                 <span className='my-acc-span'>last updated date</span>
-                {new Date(user.updatedAt).toLocaleString('en-GB').slice(0, 10)}
+                {new Date(user?.updatedAt).toLocaleString('en-GB').slice(0, 10)}
               </p>
               {/**up to but not including  */}
               <p>
                 <span className='my-acc-span'>last updated time</span>
-                {new Date(user.updatedAt).toLocaleString('en-GB').slice(11)}
+                {new Date(user?.updatedAt).toLocaleString('en-GB').slice(11)}
+              </p>
+              <p>
+                <span className='my-acc-span'>last updated time</span>
+                {user?.demoUser ? 'yes' : 'no'}
               </p>
             </div>
           </div>
