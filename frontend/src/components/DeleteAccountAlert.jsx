@@ -6,12 +6,16 @@ import { deleteUser } from '../features/users/userSlice'
 import { setBLogs } from '../features/blog/blogSlice'
 import { useSelector } from 'react-redux'
 import { setShowDeleteAccAlert, setMsg } from '../features/users/userSlice'
+import useCheckDemoUser from '../hooks/useCheckDemoUser'
 
 function DeleteAccountAlert({ setDeleteAlert, deleteID }) {
   const { showDeleteAccAlert } = useSelector((state) => state.user)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { isDemo } = useCheckDemoUser()
   const handleDelete = () => {
+    if (isDemo()) return
+
     dispatch(deleteUser(deleteID))
       .unwrap()
       .then((data) => {
@@ -33,19 +37,23 @@ function DeleteAccountAlert({ setDeleteAlert, deleteID }) {
   }
 
   return (
-    <div className="account-delete-alert">
-      <i className="warning-delete-icon fa-solid fa-user-ninja"></i>
-      <p className="account-delete-p">
-        you are about to delete your account, tasks, blogs and all data associated with
-        this account. are you sure you want to continue? this cannot be undone!
+    <div className='account-delete-alert'>
+      <i className='warning-delete-icon fa-solid fa-user-ninja'></i>
+      <p className='account-delete-p'>
+        you are about to delete your account, tasks, blogs and all data
+        associated with this account. are you sure you want to continue? this
+        cannot be undone!
       </p>
 
-      <div className="delte-acc-btn-wrap">
-        <button onClick={handleDelete} className="acc-delete-btn">
+      <div className='delte-acc-btn-wrap'>
+        <button onClick={handleDelete} className='acc-delete-btn'>
           delete
         </button>
 
-        <button onClick={() => setDeleteAlert(false)} className="acc-delete-btn">
+        <button
+          onClick={() => setDeleteAlert(false)}
+          className='acc-delete-btn'
+        >
           back
         </button>
       </div>

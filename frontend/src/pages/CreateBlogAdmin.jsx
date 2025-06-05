@@ -8,8 +8,10 @@ import NotAuthorized from '../components/NotAuthorized'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { scrollTop } from '../utils'
+import useCheckDemoUser from '../hooks/useCheckDemoUser'
 
 function CreateBlogAdmin() {
+  const { isDemo } = useCheckDemoUser()
   const navigate = useNavigate()
 
   // this locks the screen if user is not admin or suspended
@@ -37,8 +39,15 @@ function CreateBlogAdmin() {
     createdByAdmin: true,
   })
 
-  const { blogTitle, country, blogBody, featured, publish, createdByAdmin, author } =
-    formData
+  const {
+    blogTitle,
+    country,
+    blogBody,
+    featured,
+    publish,
+    createdByAdmin,
+    author,
+  } = formData
   // const { isError, errMSG } = useSelector((state) => state.user)
 
   const { userDropDownID, userDropDownName } = userSelectData
@@ -109,8 +118,9 @@ function CreateBlogAdmin() {
 
   // use form data as we are working with files
   const onSubmit = async (e) => {
-    setLoading(true)
     e.preventDefault()
+    if (isDemo()) return
+    setLoading(true)
 
     // set formData obj
     const formData = new FormData()
@@ -184,15 +194,15 @@ function CreateBlogAdmin() {
     return <NotAuthorized errMSG={errMSG} />
   }
   return (
-    <div className="page-container admin-new-blog-container">
+    <div className='page-container admin-new-blog-container'>
       {/* <BackButton /> */}
 
       {/* if  publish: false then return ... this article is not ready yet */}
-      <section className="admin-blog-form-container">
+      <section className='admin-blog-form-container'>
         {' '}
-        <div className="admin-blog-form-container-right-div">
-          <div className="admin-blog-icon-div">
-            <i className="admin-blog-icon fa-solid fa-blog"></i>
+        <div className='admin-blog-form-container-right-div'>
+          <div className='admin-blog-icon-div'>
+            <i className='admin-blog-icon fa-solid fa-blog'></i>
           </div>
           <div>
             <p>hello {user.name}</p>
@@ -200,26 +210,30 @@ function CreateBlogAdmin() {
           </div>
           <p>new blog for: {userDropDownName && userDropDownName}</p>
           <p>
-            user id: <span className="user-id">{userDropDownID && userDropDownID}</span>
+            user id:{' '}
+            <span className='user-id'>{userDropDownID && userDropDownID}</span>
           </p>
 
           {showToast && (
-            <div className="created-toast"> blog created for {userDropDownName}</div>
+            <div className='created-toast'>
+              {' '}
+              blog created for {userDropDownName}
+            </div>
           )}
         </div>
         <div>
           {' '}
-          <form onSubmit={onSubmit} className="form new-blog-form-admin">
-            <div className="form-group user-select-dropdown-wrap">
+          <form onSubmit={onSubmit} className='form new-blog-form-admin'>
+            <div className='form-group user-select-dropdown-wrap'>
               <select
-                className="admin-user-create-dropdown"
+                className='admin-user-create-dropdown'
                 ref={userDropDown}
                 onChange={handleUserSelect}
-                name="userDropDown"
-                id="userDropDown"
+                name='userDropDown'
+                id='userDropDown'
               >
                 {/* do the checks to see if it matches data-id */}
-                <option data-id="please-select">please select author</option>
+                <option data-id='please-select'>please select author</option>
                 {users &&
                   users.map((user) => (
                     <option
@@ -232,79 +246,79 @@ function CreateBlogAdmin() {
                     </option>
                   ))}
               </select>
-              <i className="dropdown-chevron fa-solid fa-chevron-down"></i>
+              <i className='dropdown-chevron fa-solid fa-chevron-down'></i>
             </div>
 
-            <div className="form-group">
+            <div className='form-group'>
               {/* to do: looop through inputs dynamicly */}
               <input
-                type="text"
-                id="author"
+                type='text'
+                id='author'
                 value={userDropDownName}
                 onChange={onChange}
-                className="form-input"
-                name="author"
-                placeholder="Blog Author"
+                className='form-input'
+                name='author'
+                placeholder='Blog Author'
                 disabled={true}
                 // required
               />
             </div>
-            <div className="form-group">
+            <div className='form-group'>
               <input
-                type="blogTitle"
-                id="blogTitle"
+                type='blogTitle'
+                id='blogTitle'
                 value={blogTitle}
                 onChange={onChange}
-                className="form-input"
-                name="blogTitle"
-                placeholder="Blog BlogTitle"
+                className='form-input'
+                name='blogTitle'
+                placeholder='Blog BlogTitle'
                 // required
               />
             </div>
-            <div className="form-group">
+            <div className='form-group'>
               <input
-                type="text"
-                id="country"
+                type='text'
+                id='country'
                 value={country}
                 onChange={onChange}
-                className="form-input"
-                name="country"
-                placeholder="Blog Country"
-                autoComplete="on"
+                className='form-input'
+                name='country'
+                placeholder='Blog Country'
+                autoComplete='on'
                 // required
               />
             </div>
 
-            <div className="form-group">
+            <div className='form-group'>
               <textarea
-                name="blogBody"
+                name='blogBody'
                 onChange={onChange}
-                id="blogBody"
+                id='blogBody'
                 value={blogBody}
-                className="form-input blog-input-body"
-                placeholder="Blog Text"
+                className='form-input blog-input-body'
+                placeholder='Blog Text'
               ></textarea>
             </div>
 
-            <div className="form-group">
-              <label className="check-form-control">
+            <div className='form-group'>
+              <label className='check-form-control'>
                 <input
                   onChange={onChange}
-                  id="featured"
-                  type="checkbox"
-                  name="featured"
+                  id='featured'
+                  type='checkbox'
+                  name='featured'
                   value={false}
                   checked={featured}
                 />
                 featured
               </label>
 
-              <label className="check-form-control">
+              <label className='check-form-control'>
                 <input
                   onChange={onChange}
-                  type="checkbox"
-                  id="publish"
-                  name="publish"
+                  type='checkbox'
+                  id='publish'
+                  name='publish'
                   value={false}
                   checked={publish}
                 />
@@ -314,19 +328,19 @@ function CreateBlogAdmin() {
 
             {/* RE-FACTOR THIS AND ADMIN */}
             {/* <input className="file-input" type="file" name="files[]" multiple /> */}
-            <div className="form-group image-select-btn-wrap">
+            <div className='form-group image-select-btn-wrap'>
               {/* Hidden file input for images */}
               <input
-                type="file"
-                accept="image/*"
+                type='file'
+                accept='image/*'
                 multiple
                 ref={imagesInputRef}
                 style={{ display: 'none' }}
                 onChange={handleImagesChange}
               />
               <button
-                type="button"
-                className="select-images-btn"
+                type='button'
+                className='select-images-btn'
                 onClick={triggerImagesSelect}
               >
                 Images
@@ -334,15 +348,15 @@ function CreateBlogAdmin() {
 
               {/* Hidden file input for hero image */}
               <input
-                type="file"
-                accept="image/*"
+                type='file'
+                accept='image/*'
                 ref={heroImageInputRef}
                 style={{ display: 'none' }}
                 onChange={handleHeroImageChange}
               />
               <button
-                type="button"
-                className="select-images-btn"
+                type='button'
+                className='select-images-btn'
                 onClick={triggerHeroImageSelect}
               >
                 Hero
@@ -353,7 +367,7 @@ function CreateBlogAdmin() {
                   <h4>Selected Images:</h4>
                   <ul>
                     {images.map((file, index) => (
-                      <li className="file-li-item" key={index}>
+                      <li className='file-li-item' key={index}>
                         {file.name}
                       </li>
                     ))}
@@ -362,22 +376,22 @@ function CreateBlogAdmin() {
               )}
 
               {heroImage && (
-                <div className="file-li-item">
+                <div className='file-li-item'>
                   <h4>Selected Hero Image:</h4>
                   <p>{heroImage.name}</p>
                 </div>
               )}
             </div>
 
-            <div className="form-group form-btn-container create-blog-btn-container">
+            <div className='form-group form-btn-container create-blog-btn-container'>
               <button
                 onClick={handleClearForm}
-                type="button"
-                className="form-btn clear-blog-text-btn create-blog-btn"
+                type='button'
+                className='form-btn clear-blog-text-btn create-blog-btn'
               >
                 clear all
               </button>
-              <button className="form-btn create-blog-btn">create blog</button>
+              <button className='form-btn create-blog-btn'>create blog</button>
             </div>
           </form>
         </div>

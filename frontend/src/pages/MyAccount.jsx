@@ -17,7 +17,9 @@ import DeleteAccountAlert from '../components/DeleteAccountAlert'
 import MyAccDeleteAlert from '../components/MyAccDeleteAlert'
 
 import tempImg from '../img/user.png'
+import useCheckDemoUser from '../hooks/useCheckDemoUser'
 function MyAccount() {
+  const { isDemo } = useCheckDemoUser()
   const { showDeleteAccAlert, user } = useSelector((state) => state.user)
   const [deleteID, setDeleteID] = useState('')
   const [deleteAlert, setDeleteAlert] = useState(false)
@@ -35,7 +37,14 @@ function MyAccount() {
     newName: '',
   })
   const fileInputRef = useRef(null)
-  const { oldPassWord, newPassWord, oldEmail, newEmail, confirmEmail, newName } = formData
+  const {
+    oldPassWord,
+    newPassWord,
+    oldEmail,
+    newEmail,
+    confirmEmail,
+    newName,
+  } = formData
   const [userData, setUserData] = useState(null)
 
   const dispatch = useDispatch()
@@ -66,6 +75,7 @@ function MyAccount() {
 
   const onChangePassWord = async (e) => {
     e.preventDefault()
+    if (isDemo()) return
 
     const passwordData = {
       oldPassWord,
@@ -85,6 +95,7 @@ function MyAccount() {
 
   const onChangeEmail = async (e) => {
     e.preventDefault()
+    if (isDemo()) return
     const data = {
       oldEmail,
       newEmail,
@@ -110,6 +121,8 @@ function MyAccount() {
 
   const onChangeName = async (e) => {
     e.preventDefault()
+    if (isDemo()) return
+
     const data = {
       newName,
     }
@@ -193,36 +206,36 @@ function MyAccount() {
   if (!userData) {
     return <GlobalPageLoader />
   }
-console.log(userData)
+  console.log(userData)
   return (
-    <div className="page-container my-account-container">
-      <section className="my-account-header">
+    <div className='page-container my-account-container'>
+      <section className='my-account-header'>
         <h1>my account page</h1>
         <p>view and manage your account here</p>
       </section>
 
-      <section className="my-account-grid">
+      <section className='my-account-grid'>
         <div>
-          <p className="main-acc-info">
+          <p className='main-acc-info'>
             <span>main account info</span>
             <img
               onClick={handleImageChange}
-              className="profile-img"
+              className='profile-img'
               src={user?.avatar || tempImg}
-              alt=""
+              alt=''
             />
 
             {/* Hidden file input */}
             <input
-              type="file"
-              accept="image/*"
+              type='file'
+              accept='image/*'
               ref={fileInputRef}
               style={{ display: 'none' }}
               onChange={handleFileChange}
             />
           </p>
-          <div className="my-account-user-info-div">
-            <div className="my-account-user-inner-div">
+          <div className='my-account-user-info-div'>
+            <div className='my-account-user-inner-div'>
               <p>name: </p>
               <p>email: </p>
               <p>date of birth: </p>
@@ -241,76 +254,79 @@ console.log(userData)
               <p>last updated time: </p>
             </div>
 
-            <div className="my-account-user-inner-div">
+            <div className='my-account-user-inner-div'>
               <p>
-                <span className="my-acc-span">name</span> {user && user.name}
+                <span className='my-acc-span'>name</span> {user && user.name}
               </p>
               <p>
-                <span className="my-acc-span">email</span> {user && user.email}
+                <span className='my-acc-span'>email</span> {user && user.email}
               </p>
               <p>
-                <span className="my-acc-span">date of birth</span> {user && user.dob}
+                <span className='my-acc-span'>date of birth</span>{' '}
+                {user && user.dob}
               </p>
               <p>
-                <span className="my-acc-span">admin</span>{' '}
+                <span className='my-acc-span'>admin</span>{' '}
                 {user && user.isAdmin ? 'yes' : 'no'}
               </p>
               <p>
-                <span className="my-acc-span">super admin</span>{' '}
+                <span className='my-acc-span'>super admin</span>{' '}
                 {user && user.isSuperAdmin ? 'yes' : 'no'}
               </p>
               <p>
-                <span className="my-acc-span">suspended</span>{' '}
+                <span className='my-acc-span'>suspended</span>{' '}
                 {user && user.isSuspended ? 'yes' : 'no'}
               </p>
               <p>
-                <span className="my-acc-span">last loggin date</span>{' '}
+                <span className='my-acc-span'>last loggin date</span>{' '}
                 {user && user.lastLoginDate}
               </p>
               <p>
-                <span className="my-acc-span">last login time</span>{' '}
+                <span className='my-acc-span'>last login time</span>{' '}
                 {user && user.lastLoginTime}
               </p>
               <p>
-                <span className="my-acc-span">number of logins</span>{' '}
+                <span className='my-acc-span'>number of logins</span>{' '}
                 {user && user.logins}
               </p>
               <p>
-                <span className="my-acc-span">mumber of blogs</span> {user && user.blogs}
+                <span className='my-acc-span'>mumber of blogs</span>{' '}
+                {user && user.blogs}
               </p>
               <p>
-                <span className="my-acc-span">number of featured blogs</span>{' '}
+                <span className='my-acc-span'>number of featured blogs</span>{' '}
                 {user && user.featuredBlogs}
               </p>
               <p>
-                <span className="my-acc-span">number of tasks</span> {user && user.tasks}
+                <span className='my-acc-span'>number of tasks</span>{' '}
+                {user && user.tasks}
               </p>
 
               <p>
-                <span className="my-acc-span">sign up date</span>
+                <span className='my-acc-span'>sign up date</span>
                 {new Date(user.createdAt).toLocaleString('en-GB').slice(0, 10)}
               </p>
 
               <p>
-                <span className="my-acc-span">sign up time</span>
+                <span className='my-acc-span'>sign up time</span>
                 {new Date(user.createdAt).toLocaleString('en-GB').slice(11)}
               </p>
               {/* last updated */}
               <p>
-                <span className="my-acc-span">last updated date</span>
+                <span className='my-acc-span'>last updated date</span>
                 {new Date(user.updatedAt).toLocaleString('en-GB').slice(0, 10)}
               </p>
               {/**up to but not including  */}
               <p>
-                <span className="my-acc-span">last updated time</span>
+                <span className='my-acc-span'>last updated time</span>
                 {new Date(user.updatedAt).toLocaleString('en-GB').slice(11)}
               </p>
             </div>
           </div>
         </div>
-        <div className="my-account-password-reset-div">
-          <section className="my-account-section">
-            <p className="change-pw-p">
+        <div className='my-account-password-reset-div'>
+          <section className='my-account-section'>
+            <p className='change-pw-p'>
               {' '}
               <span>change your password</span>
             </p>
@@ -318,34 +334,34 @@ console.log(userData)
               {alert && alertName === 'password' && (
                 <AccountAlert alertMSG={alertMSG} alertType={alertType} />
               )}
-              <div className="reset-form-group">
+              <div className='reset-form-group'>
                 <input
                   onChange={onChange}
-                  type="text"
-                  name="oldPassWord"
-                  className="password-reset-input"
-                  placeholder="enter old password"
+                  type='text'
+                  name='oldPassWord'
+                  className='password-reset-input'
+                  placeholder='enter old password'
                   value={oldPassWord}
                 />
               </div>
-              <div className="reset-form-group">
+              <div className='reset-form-group'>
                 <input
                   onChange={onChange}
-                  type="text"
-                  name="newPassWord"
-                  className="password-reset-input"
-                  placeholder="enter new password"
+                  type='text'
+                  name='newPassWord'
+                  className='password-reset-input'
+                  placeholder='enter new password'
                   value={newPassWord}
                 />
               </div>
-              <div className="change-pw-div">
-                <button className="change-password-btn">change password</button>
+              <div className='change-pw-div'>
+                <button className='change-password-btn'>change password</button>
               </div>
             </form>
           </section>
 
-          <section className="my-account-section">
-            <p className="change-pw-p">
+          <section className='my-account-section'>
+            <p className='change-pw-p'>
               {' '}
               <span>change your email</span>
             </p>
@@ -354,45 +370,45 @@ console.log(userData)
                 <AccountAlert alertMSG={alertMSG} alertType={alertType} />
               )}
 
-              <div className="reset-form-group">
+              <div className='reset-form-group'>
                 <input
                   onChange={onChange}
-                  type="text"
-                  name="oldEmail"
-                  className="password-reset-input"
-                  placeholder="enter old email"
+                  type='text'
+                  name='oldEmail'
+                  className='password-reset-input'
+                  placeholder='enter old email'
                   value={oldEmail}
                 />
               </div>
-              <div className="reset-form-group">
+              <div className='reset-form-group'>
                 <input
                   onChange={onChange}
-                  type="text"
-                  name="newEmail"
-                  className="password-reset-input"
-                  placeholder="enter new email"
+                  type='text'
+                  name='newEmail'
+                  className='password-reset-input'
+                  placeholder='enter new email'
                   value={newEmail}
                 />
               </div>
-              <div className="reset-form-group">
+              <div className='reset-form-group'>
                 <input
                   onChange={onChange}
-                  type="text"
-                  name="confirmEmail"
-                  className="password-reset-input"
-                  placeholder="confirm new email"
+                  type='text'
+                  name='confirmEmail'
+                  className='password-reset-input'
+                  placeholder='confirm new email'
                   value={confirmEmail}
                 />
               </div>
-              <div className=" change-pw-div">
-                <button className="change-password-btn">change email</button>
+              <div className=' change-pw-div'>
+                <button className='change-password-btn'>change email</button>
               </div>
             </form>
           </section>
 
           {/* change name */}
-          <section className="my-account-section">
-            <p className="change-pw-p">
+          <section className='my-account-section'>
+            <p className='change-pw-p'>
               {' '}
               <span>change your name</span>
             </p>
@@ -401,18 +417,18 @@ console.log(userData)
                 <AccountAlert alertMSG={alertMSG} alertType={alertType} />
               )}
 
-              <div className="reset-form-group">
+              <div className='reset-form-group'>
                 <input
                   onChange={onChange}
-                  type="text"
-                  name="newName"
-                  className="password-reset-input"
-                  placeholder="enter new name"
+                  type='text'
+                  name='newName'
+                  className='password-reset-input'
+                  placeholder='enter new name'
                   value={newName}
                 />
               </div>
-              <div className="change-pw-div">
-                <button className="change-password-btn">change name</button>
+              <div className='change-pw-div'>
+                <button className='change-password-btn'>change name</button>
               </div>
             </form>
           </section>
@@ -420,14 +436,20 @@ console.log(userData)
           {/* if in loop then check index 
             this way we check another condition
           */}
-          <section className="my-account-section">
+          <section className='my-account-section'>
             {showDeleteAccAlert && <MyAccDeleteAlert />}
 
             {deleteAlert && (
-              <DeleteAccountAlert setDeleteAlert={setDeleteAlert} deleteID={deleteID} />
+              <DeleteAccountAlert
+                setDeleteAlert={setDeleteAlert}
+                deleteID={deleteID}
+              />
             )}
-            <div className="user-delete-user-btn-container">
-              <button onClick={handleDeletemodal} className="delete-user-user-btn">
+            <div className='user-delete-user-btn-container'>
+              <button
+                onClick={handleDeletemodal}
+                className='delete-user-user-btn'
+              >
                 {/* to animate this is use a callback fn () with if options */}
                 {deleteAlert ? 'close' : 'delete profile'}
               </button>

@@ -5,8 +5,10 @@ import { registerAsAdnin } from '../../features/auth/authSlice'
 import CustomAlert from '../alerts/CustomAlert'
 import { getAllUsersAdmin, setUsers } from '../../features/admin/adminSlice'
 import { useNavigate } from 'react-router-dom'
+import useCheckDemoUser from '../../hooks/useCheckDemoUser'
 
 function NewUserModal() {
+  const { isDemo } = useCheckDemoUser()
   const navigate = useNavigate()
   const [type, setType] = useState('password')
   const [showAlert, setshowAlert] = useState(false)
@@ -42,6 +44,8 @@ function NewUserModal() {
 
   const onSubmit = (e) => {
     e.preventDefault()
+    if (isDemo()) return
+
     if (password !== password2) {
       console.log('passwords do not match ')
       showAlertFunc(true, 'Passwords must match... ', 'black')
@@ -91,37 +95,37 @@ function NewUserModal() {
   }
 
   return (
-    <div className="modal-container">
-      <div className="modal">
-        <h3 className="admin-h3 admin-user-h3">
+    <div className='modal-container'>
+      <div className='modal'>
+        <h3 className='admin-h3 admin-user-h3'>
           <span>add a new user - admin only</span>
         </h3>
         {showAlert && <CustomAlert msg={alertMSG} clr={alertClr} />}
-        <button onClick={handleClose} className="close-modal-btn">
+        <button onClick={handleClose} className='close-modal-btn'>
           cancel
         </button>
-        <div className="modal-body">
+        <div className='modal-body'>
           <form onSubmit={onSubmit}>
-            <div className="admin-controls-div">
-              <label className=" admin-check-label">
+            <div className='admin-controls-div'>
+              <label className=' admin-check-label'>
                 <input
-                  className="admin-check"
+                  className='admin-check'
                   onChange={onMutate}
-                  type="checkbox"
-                  name="isSuspended"
-                  id="isSuspended"
+                  type='checkbox'
+                  name='isSuspended'
+                  id='isSuspended'
                   value={false}
                   checked={isSuspended}
                 />
                 suspended
               </label>
-              <label className=" admin-check-label">
+              <label className=' admin-check-label'>
                 <input
-                  className="admin-check"
+                  className='admin-check'
                   onChange={onMutate}
-                  type="checkbox"
-                  name="isAdmin"
-                  id="isAdmin"
+                  type='checkbox'
+                  name='isAdmin'
+                  id='isAdmin'
                   value={false}
                   checked={isAdmin}
                 />
@@ -129,75 +133,75 @@ function NewUserModal() {
               </label>
             </div>
 
-            <div className="modal-form-control">
-              <label className="update-label" htmlFor="blogTitle">
+            <div className='modal-form-control'>
+              <label className='update-label' htmlFor='blogTitle'>
                 User Name
               </label>
               <input
-                id="name"
-                name="name"
-                type="text"
-                className="modal-input"
-                placeholder="Enter Name"
+                id='name'
+                name='name'
+                type='text'
+                className='modal-input'
+                placeholder='Enter Name'
                 value={name}
                 onChange={onMutate}
               />
             </div>
 
-            <div className="modal-form-control">
-              <label className="update-label" htmlFor="author">
+            <div className='modal-form-control'>
+              <label className='update-label' htmlFor='author'>
                 User Email
               </label>
 
               <input
-                id="email"
-                name="email"
-                type="text"
-                className="modal-input"
-                placeholder="Enter Email"
+                id='email'
+                name='email'
+                type='text'
+                className='modal-input'
+                placeholder='Enter Email'
                 value={email}
                 onChange={onMutate}
               />
             </div>
 
-            <div className="modal-form-control">
-              <label className="update-label" htmlFor="author">
+            <div className='modal-form-control'>
+              <label className='update-label' htmlFor='author'>
                 Enter Password
               </label>
-              <div className="password-input-wrap">
+              <div className='password-input-wrap'>
                 <input
-                  id="password"
-                  name="password"
+                  id='password'
+                  name='password'
                   type={type}
-                  className="modal-input"
-                  placeholder="Enter Password"
+                  className='modal-input'
+                  placeholder='Enter Password'
                   value={password}
                   onChange={onMutate}
-                  autoComplete="true"
+                  autoComplete='true'
                 />
               </div>
             </div>
 
-            <div className="modal-form-control">
-              <label className="update-label" htmlFor="author">
+            <div className='modal-form-control'>
+              <label className='update-label' htmlFor='author'>
                 Confirm Password
               </label>
-              <div className="password-input-wrap">
+              <div className='password-input-wrap'>
                 <input
-                  id="password2"
-                  name="password2"
+                  id='password2'
+                  name='password2'
                   type={type}
-                  className="modal-input"
-                  placeholder="Confirm Password"
+                  className='modal-input'
+                  placeholder='Confirm Password'
                   value={password2}
                   onChange={onMutate}
-                  autoComplete="true"
+                  autoComplete='true'
                 />
               </div>
             </div>
 
-            <div className="modal-form-control update-modal-btn-container">
-              <button className="update-modal-btn">create new user</button>
+            <div className='modal-form-control update-modal-btn-container'>
+              <button className='update-modal-btn'>create new user</button>
             </div>
           </form>
         </div>

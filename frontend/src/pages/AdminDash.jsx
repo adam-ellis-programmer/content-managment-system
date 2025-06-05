@@ -126,7 +126,7 @@ function AdminDash() {
             </Link>
           </div>
 
-          <div className="admin-dash-item">
+          {/* <div className="admin-dash-item">
             <Link className="admin-link-btn" to="/msg-page">
               <div className="admin-link-box link-box-view-messages ">
                 <p className="admin-link-p">
@@ -136,7 +136,7 @@ function AdminDash() {
                 <i className="email-icon fa-solid fa-message"></i>
               </div>
             </Link>
-          </div>
+          </div> */}
         </div>
       </section>
     </>

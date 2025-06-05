@@ -3286,6 +3286,10 @@ select {
   justify-content: center;
   align-items: center;
 }
+.admin-email-send-wrap {
+  padding: 0 3rem;
+}
+
 .admin-email-modal {
   width: 100%;
   background-color: #fff;

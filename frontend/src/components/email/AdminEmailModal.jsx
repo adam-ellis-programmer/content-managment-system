@@ -7,8 +7,10 @@ import {
 import { toast } from 'react-toastify'
 import { useEffect, useState } from 'react'
 import { getCurrentUSer } from '../../features/users/userSlice'
+import useCheckDemoUser from '../../hooks/useCheckDemoUser'
 
 const AdminEmailModal = () => {
+  const { isDemo } = useCheckDemoUser()
   const dispatch = useDispatch()
   const { adminEmailUserID } = useSelector((state) => state.admin)
   const [user, setUser] = useState(null)
@@ -56,6 +58,8 @@ const AdminEmailModal = () => {
   const handleSendEmail = async () => {
     if (isSendDisabled) return // Prevent sending if inputs are invalid or email is already sending
 
+    if (isDemo()) return
+
     setIsSending(true) // Start the sending process
     try {
       const formattedBody = formatEmailBody(bodyValue)
@@ -83,51 +87,51 @@ const AdminEmailModal = () => {
   const isSendDisabled = !subject.trim() || !bodyValue.trim() || isSending
 
   return (
-    <div className="admin-email-modal-wrap">
-      <div className="admin-email-modal">
-        <div className="admin-email-header">
+    <div className='admin-email-modal-wrap '>
+      <div className='admin-email-modal admin-email-send-wrap'>
+        <div className='admin-email-header'>
           <h1>Send Email</h1>
-          <i className="fa-regular fa-paper-plane send-icon"></i>
+          <i className='fa-regular fa-paper-plane send-icon'></i>
         </div>
-        <div className="admin-email-body">
-          <div className="admin-email-form-group">
+        <div className='admin-email-body'>
+          <div className='admin-email-form-group'>
             <input
-              type="text"
-              className="admin-email-input admin-email-to"
-              placeholder="To"
+              type='text'
+              className='admin-email-input admin-email-to'
+              placeholder='To'
               value={`TO: ${toValue}`}
               onChange={(e) => setToValue(e.target.value)}
               disabled
             />
           </div>
-          <div className="admin-email-form-group">
+          <div className='admin-email-form-group'>
             <input
-              type="text"
-              className="admin-email-input admin-email-from"
-              placeholder="From"
+              type='text'
+              className='admin-email-input admin-email-from'
+              placeholder='From'
               value={`FROM: ${fromName}`}
               onChange={(e) => setFromName(e.target.value)}
               disabled
             />
           </div>
-          <div className="admin-email-form-group">
+          <div className='admin-email-form-group'>
             <input
-              type="text"
-              className="admin-email-input admin-email-subject"
-              placeholder="Subject"
+              type='text'
+              className='admin-email-input admin-email-subject'
+              placeholder='Subject'
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
             />
           </div>
-          <div className="admin-email-form-group">
+          <div className='admin-email-form-group'>
             <textarea
               onChange={(e) => setBodyValue(e.target.value)}
               value={bodyValue}
-              className="admin-email-input admin-email-text"
-              placeholder="Email body"
+              className='admin-email-input admin-email-text'
+              placeholder='Email body'
             ></textarea>
           </div>
-          <div className="admin-email-btn-wrap">
+          <div className='admin-email-btn-wrap'>
             <button
               onClick={handleSendEmail}
               className={`admin-email-btn ${isSendDisabled ? 'disabled' : ''}`}
@@ -135,12 +139,12 @@ const AdminEmailModal = () => {
             >
               {isSending ? 'Sending...' : 'Send'}
             </button>
-            <button onClick={handleCloseModal} className="admin-email-btn">
+            <button onClick={handleCloseModal} className='admin-email-btn'>
               Cancel
             </button>
           </div>
         </div>
-        <div className="admin-email-footer">
+        <div className='admin-email-footer'>
           <p>All emails are logged on our server</p>
         </div>
       </div>
