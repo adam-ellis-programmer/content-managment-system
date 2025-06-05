@@ -21,6 +21,7 @@ const registerAsAdnin = async (token, userData) => {
       Authorization: `Bearer ${token}`,
     },
   }
+
   const response = await axios.post(API_URL_ADMIN, userData, config)
 
   return response.data
