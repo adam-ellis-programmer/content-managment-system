@@ -148,8 +148,10 @@ console.log('-----------ran---------------')
       avatar: user.avatar,
       isDemoUser: user.demoUser
     }
+    console.log('hello user',user)
+    console.log('demo user',user.demoUser)
+    console.log('resData-->', resData)         
     res.status(200).json(resData)                                
-    console.log('hello user',user)         
   } else {                                    
     res.status(401)                           
     throw new Error('Invalid credentials')    

@@ -34,7 +34,7 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    isDemoUser: {
+    demoUser: {
       type: Boolean,
       default: false,
     },
