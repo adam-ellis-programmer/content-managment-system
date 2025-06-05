@@ -99,7 +99,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // @ access public
 // prettier-ignore
 const loginUser = asyncHandler(async (req, res) => {
-
+console.log('-----------ran---------------')
   const { email, password } = req.body
 
   if(!email){
@@ -149,7 +149,7 @@ const loginUser = asyncHandler(async (req, res) => {
       isDemoUser: user.demoUser
     }
     res.status(200).json(resData)                                
-    // console.log('hello user',user)         
+    console.log('hello user',user)         
   } else {                                    
     res.status(401)                           
     throw new Error('Invalid credentials')    

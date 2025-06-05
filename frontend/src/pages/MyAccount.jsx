@@ -193,7 +193,7 @@ function MyAccount() {
   if (!userData) {
     return <GlobalPageLoader />
   }
-
+console.log(userData)
   return (
     <div className="page-container my-account-container">
       <section className="my-account-header">

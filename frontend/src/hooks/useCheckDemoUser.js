@@ -6,6 +6,7 @@ const useCheckDemoUser = () => {
   const dispatch = useDispatch()
   const isDemoUser = (msg = 'test msg') => {
     const user = JSON.parse(localStorage.getItem('user')).isDemoUser
+    console.log(user)
     if (user) {
       // set
       dispatch(setGlobalAlert(true))
