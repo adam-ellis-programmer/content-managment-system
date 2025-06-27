@@ -482,7 +482,6 @@ ul {
   object-position: bottom;
   z-index: -1;
   position: absolute;
-
 }
 
 .home-img-overlay {
@@ -1224,12 +1223,10 @@ ul {
 }
 
 .register-page-container {
-  /* margin-top: 3px; */
-  /* background-image: url('./img/bg-6.jpg'); */
   background-position: center;
   background-size: cover;
   position: relative;
-  
+  border-bottom: 0.1px solid rgb(41, 74, 123);
 }
 
 .register-bg-img {
@@ -1252,6 +1249,7 @@ ul {
   bottom: 0;
   width: 100%;
   z-index: -1;
+  height: 100%;
 }
 
 .signin-container {
