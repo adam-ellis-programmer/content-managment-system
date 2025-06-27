@@ -96,6 +96,7 @@ const siteSlice = createSlice({
           })
         } 
       })
+      
       .addCase(fetchAllSiteImages.rejected, (state, action) => {
         state.isLoading = false
         state.isImagesLoaded = false
