@@ -51,7 +51,7 @@ a {
 
 nav {
   height: 100px;
-  box-shadow: 1px 2px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 1px 2px rgba(0, 0, 0, 0.1); */
   padding: 0;
 }
 
@@ -465,7 +465,7 @@ ul {
 
 /* ===============  HOME PAGE ================= */
 .home-hero {
-  margin-top: 5px;
+  /* margin-top: 5px; */
   width: 100%;
   height: calc(100vh - 100px);
   /* background-image: linear-gradient(rgba(58, 51, 51, 0.75), rgba(0, 0, 0, 0.75)),
@@ -1223,7 +1223,7 @@ ul {
 }
 
 .register-page-container {
-  margin-top: 3px;
+  /* margin-top: 3px; */
   /* background-image: url('./img/bg-6.jpg'); */
   background-position: center;
   background-size: cover;
@@ -1256,7 +1256,7 @@ ul {
   /* background-image: url('./img/beach-3.jpg'); */
   background-position: center;
   background-size: cover;
-  margin-top: 3px;
+  /* margin-top: 3px; */
   position: relative;
 }
 
@@ -4119,7 +4119,7 @@ input[type='radio'] {
   }
   nav {
     /* height: 60px; */
-    box-shadow: 1px 2px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 1px 2px rgba(0, 0, 0, 0.1); */
   }
 
   .nav-logo {
@@ -5446,4 +5446,35 @@ input[type='radio'] {
 
 .site-admin-card-icon {
   margin-left: 1rem;
+}
+
+.custom-loader-bg {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(
+    rgba(58, 51, 51, 0.75),
+    rgba(0, 0, 0, 0.75)
+  );
+}
+
+.lo {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #fff;
+  border-bottom-color: #ff3d00;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

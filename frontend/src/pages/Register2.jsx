@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
 import { register, sendWelcomeEmails } from '../features/auth/authSlice'
-import { fetchAllSiteImages } from '../features/site/siteSlice' // Add this import
+import { fetchAllSiteImages } from '../features/site/siteSlice'
 import { formatedDOB, getDate, scrollTop } from '../utils'
 import { emailSignUp } from '../features/users/userSlice'
 
@@ -57,7 +57,9 @@ function Register() {
   const dispatch = useDispatch()
 
   // Get site images from Redux store
-  const { images, isImagesLoaded } = useSelector((state) => state.site)
+  const { images, isImagesLoaded, isLoading } = useSelector(
+    (state) => state.site
+  )
 
   // Fetch site images if not already loaded
   useEffect(() => {
@@ -203,24 +205,23 @@ function Register() {
     }))
   }
 
-  // Get the register page image from database
-  const registerPageImage = images?.registerPage || ''
+  // Show loader while images are loading or if no register page image exists
+  if (isLoading || !isImagesLoaded || !images?.registerPage) {
+    return (
+      <div className='custom-loader-bg'>
+        <span className='lo'></span>
+      </div>
+    )
+  }
 
   return (
     <>
       <div className='register-page-container'>
-        <div className="register-overlay"></div>
+        <div className='register-overlay'></div>
         <img
           className='register-bg-img'
-          src={registerPageImage}
+          src={images.registerPage}
           alt='Register page background'
-          onError={(e) => {
-            // Hide image if it fails to load
-            e.target.style.display = 'none'
-          }}
-          style={{
-            display: registerPageImage ? 'block' : 'none',
-          }}
         />
         <section className='register-heading'>
           <h1 className='register-h1'>

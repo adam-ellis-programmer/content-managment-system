@@ -2,13 +2,12 @@ import MiddelCollumnAdvert from '../components/advert components/MiddelCollumnAd
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { login } from '../features/auth/authSlice'
-import { fetchAllSiteImages } from '../features/site/siteSlice' // Add this import
+import { fetchAllSiteImages } from '../features/site/siteSlice'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { getDate, scrollTop } from '../utils'
 import { updateUserDate } from '../features/users/userSlice'
 import { updateUSerState } from '../features/auth/authSlice'
-import bg from '../img/bg.jpg' // Keep as fallback
 import NotAuthorized from '../components/NotAuthorized'
 
 function SignIn() {
@@ -37,7 +36,7 @@ function SignIn() {
   const navigate = useNavigate()
 
   // Get site images from Redux store
-  const { images, isImagesLoaded } = useSelector((state) => state.site)
+  const { images, isImagesLoaded, isLoading } = useSelector((state) => state.site)
 
   // Fetch site images if not already loaded
   useEffect(() => {
@@ -108,8 +107,14 @@ function SignIn() {
     }
   }
 
-  // Get the login page image from database, fallback to bg image
-  const loginPageImage = images?.loginPage || bg
+  // Show loader while images are loading or if no login page image exists
+  if (isLoading || (!isImagesLoaded || !images?.loginPage)) {
+    return (
+      <div className='custom-loader-bg'>
+        <span className='lo'></span>
+      </div>
+    )
+  }
 
   // if suspended we now lock the form rather than the page
   // if (showError) {
@@ -120,15 +125,9 @@ function SignIn() {
     <>
       <div className='signin-container'>
         <img
-          src={loginPageImage}
+          src={images.loginPage}
           className='sign-in-img'
           alt='Sign in page background'
-          onError={(e) => {
-            // Fallback to bg image if database image fails to load
-            if (e.target.src !== bg) {
-              e.target.src = bg
-            }
-          }}
         />
         <div className='sign-in-overlay'></div>
         <section className='login-form-section'>

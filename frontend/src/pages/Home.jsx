@@ -1,13 +1,12 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getPublicBlogs } from '../features/blog/blogSlice'
-import { fetchAllSiteImages } from '../features/site/siteSlice' // Add this import
+import { fetchAllSiteImages } from '../features/site/siteSlice'
 
 import EmailSignUpForm from '../components/EmailSignUpForm'
 import FeaturedBlogItem from '../components/FeaturedBlogItem'
 
 import HomeLoader from '../components/loaders/HomeLoader'
-import tempImg from '../img/temp-imgs/home-1.jpg' // Keep as fallback
 import { scrollTop } from '../utils'
 import useCheckDemoUser from '../hooks/useCheckDemoUser'
 
@@ -18,7 +17,9 @@ function Home() {
   const { user } = useSelector((state) => state.auth)
 
   // Get site images from Redux store
-  const { images, isImagesLoaded } = useSelector((state) => state.site)
+  const { images, isImagesLoaded, isLoading } = useSelector(
+    (state) => state.site
+  )
 
   useEffect(() => {
     scrollTop()
@@ -50,22 +51,22 @@ function Home() {
     }
   }
 
-  // Get the home page image from database, fallback to temp image
-  const homePageImage = images?.homePage || tempImg
+  // Show loader while images are loading or if no home page image exists
+  if (isLoading || !isImagesLoaded || !images?.homePage) {
+    return (
+      <div className='custom-loader-bg'>
+        <span className='lo'></span>
+      </div>
+    )
+  }
 
   return (
     <>
       <section className='home-hero'>
         <img
           className='home-main-img'
-          src={homePageImage}
+          src={images.homePage}
           alt='Home page hero image'
-          onError={(e) => {
-            // Fallback to temp image if database image fails to load
-            if (e.target.src !== tempImg) {
-              e.target.src = tempImg
-            }
-          }}
         />
         <div className='home-img-overlay'>hello</div>
         <div className='home-hero-header-container'>
