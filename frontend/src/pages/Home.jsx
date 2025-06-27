@@ -68,7 +68,7 @@ function Home() {
           src={images.homePage}
           alt='Home page hero image'
         />
-        <div className='home-img-overlay'>hello</div>
+        <div className='home-img-overlay'></div>
         <div className='home-hero-header-container'>
           <div className='home-hero-content'>
             <div className='hero-head-container'>
