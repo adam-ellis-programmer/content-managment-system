@@ -29,6 +29,7 @@ import NotFound from './pages/NotFound'
 import GlobalAlert from './components/alerts/GlobalAlert'
 import { selectShowAlert } from './features/auth/authSlice'
 import { useSelector } from 'react-redux'
+import SiteAdminPage from './pages/SiteAdminPage'
 
 function App() {
   const showAlert = useSelector(selectShowAlert)
@@ -57,6 +58,7 @@ function App() {
               <Route path='/manage-images/:blogID' element={<ManageImages />} />
               <Route path='/my-account' element={<MyAccount />} />
               <Route path='/public-blog/:blogID' element={<PublicBlogPage />} />
+              <Route path='/site-admin-page' element={<SiteAdminPage />} />
             </Route>
 
             {/* Admin Routes */}

@@ -32,12 +32,13 @@ const createBlog = asyncHandler(async (req, res) => {
   // hero comes in as a seperate file
   // Process the hero image if it exists
   if (req.files['heroImage'] && req.files['heroImage'][0]) {
+    
     const heroImageFile = req.files['heroImage'][0]
 
     try {
       // Upload hero image to Cloudinary with higher resolution or different settings if needed
       const result = await cloudinary.uploader.upload(heroImageFile.path, {
-        folder: 'blogs/heroImages', // Separate folder for hero images if needed
+        folder: 'blogs/heroImages', // Separate folder for hero images
         width: 1600,
         height: 900,
         crop: 'limit',
@@ -99,8 +100,16 @@ const createBlog = asyncHandler(async (req, res) => {
   }
 
   // Destructure the necessary fields from req.body
-  const { author, blogTitle, blogBody, country, featured, publish, status, lastEdited } =
-    req.body
+  const {
+    author,
+    blogTitle,
+    blogBody,
+    country,
+    featured,
+    publish,
+    status,
+    lastEdited,
+  } = req.body
 
   if (!author || !blogTitle || !blogBody || !country) {
     res.status(400)
@@ -231,9 +240,13 @@ const updateBlog = asyncHandler(async (req, res) => {
   }
 
   // req.body has all the data to update
-  const updatedBlog = await BlogModel.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  })
+  const updatedBlog = await BlogModel.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+    }
+  )
 
   res.status(200).json(updatedBlog)
 })
@@ -258,9 +271,13 @@ const updatePublicBlog = asyncHandler(async (req, res) => {
   }
 
   // new: true --> Mongoose returns the document after the update has been applied.
-  const updatedBlog = await BlogModel.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  })
+  const updatedBlog = await BlogModel.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+    }
+  )
 
   res.status(200).json(updatedBlog)
 })
@@ -281,7 +298,9 @@ const getPublicBlog = asyncHandler(async (req, res) => {
 
   if (blog.suspended === true) {
     res.status(401)
-    throw new Error('this blog has been suspended please contact a member of our team')
+    throw new Error(
+      'this blog has been suspended please contact a member of our team'
+    )
   }
 
   if (blog.publish === false) {
@@ -501,9 +520,13 @@ const updateBlogAdmin = asyncHandler(async (req, res) => {
     throw new Error('you must be admin to edit this blog')
   }
 
-  const updatedBlog = await BlogModel.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  })
+  const updatedBlog = await BlogModel.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+    }
+  )
 
   res.status(200).json(updatedBlog)
 })

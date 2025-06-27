@@ -1,19 +1,24 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getPublicBlogs } from '../features/blog/blogSlice'
+import { fetchAllSiteImages } from '../features/site/siteSlice' // Add this import
 
 import EmailSignUpForm from '../components/EmailSignUpForm'
 import FeaturedBlogItem from '../components/FeaturedBlogItem'
 
 import HomeLoader from '../components/loaders/HomeLoader'
-
+import tempImg from '../img/temp-imgs/home-1.jpg' // Keep as fallback
 import { scrollTop } from '../utils'
 import useCheckDemoUser from '../hooks/useCheckDemoUser'
+
 function Home() {
   const { isDemo } = useCheckDemoUser()
   const dispatch = useDispatch()
   const { publicBlogs } = useSelector((state) => state.blogs)
   const { user } = useSelector((state) => state.auth)
+
+  // Get site images from Redux store
+  const { images, isImagesLoaded } = useSelector((state) => state.site)
 
   useEffect(() => {
     scrollTop()
@@ -22,13 +27,19 @@ function Home() {
 
   useEffect(() => {
     dispatch(getPublicBlogs())
-  }, [])
+
+    // Fetch site images if not already loaded
+    if (!isImagesLoaded) {
+      dispatch(fetchAllSiteImages())
+    }
+  }, [dispatch, isImagesLoaded])
 
   // find only featured blogs
   const filtered =
     publicBlogs && Array.isArray(publicBlogs)
       ? publicBlogs.filter((item) => item.featured === true)
       : []
+
   // Programaticly display welcome (name) or welcome for the first time registered
   function greeting() {
     if (user && user.logins < 1) {
@@ -39,24 +50,40 @@ function Home() {
     }
   }
 
+  // Get the home page image from database, fallback to temp image
+  const homePageImage = images?.homePage || tempImg
+
   return (
     <>
       <section className='home-hero'>
+        <img
+          className='home-main-img'
+          src={homePageImage}
+          alt='Home page hero image'
+          onError={(e) => {
+            // Fallback to temp image if database image fails to load
+            if (e.target.src !== tempImg) {
+              e.target.src = tempImg
+            }
+          }}
+        />
+        <div className='home-img-overlay'>hello</div>
         <div className='home-hero-header-container'>
-          <div className='hero-head-container'>
-            <p>{greeting()}</p>
-            <h1>creative beginnings</h1>
-            <p>your blogging journey</p>
-            <p>starts here</p>
-            {!user && (
-              <p className='home-info-p'>login or register to get started </p>
-            )}
-          </div>
+          <div className='home-hero-content'>
+            <div className='hero-head-container'>
+              <p>{greeting()}</p>
+              <h1>creative beginnings</h1>
+              <p>your blogging journey</p>
+              <p>starts here</p>
+              {!user && (
+                <p className='home-info-p'>login or register to get started </p>
+              )}
+            </div>
 
-          <div className='hero-form-container'>
-            <EmailSignUpForm />
+            <div className='hero-form-container'>
+              <EmailSignUpForm />
+            </div>
           </div>
-
           <div className='home-hero-content-container'>
             {/* <p>hello</p> */}
           </div>

@@ -2,13 +2,15 @@ import MiddelCollumnAdvert from '../components/advert components/MiddelCollumnAd
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { login } from '../features/auth/authSlice'
+import { fetchAllSiteImages } from '../features/site/siteSlice' // Add this import
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { getDate, scrollTop } from '../utils'
 import { updateUserDate } from '../features/users/userSlice'
 import { updateUSerState } from '../features/auth/authSlice'
-import bg from '../img/bg.jpg'
+import bg from '../img/bg.jpg' // Keep as fallback
 import NotAuthorized from '../components/NotAuthorized'
+
 function SignIn() {
   // on mount scroll to top
   useEffect(() => {
@@ -33,6 +35,16 @@ function SignIn() {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  // Get site images from Redux store
+  const { images, isImagesLoaded } = useSelector((state) => state.site)
+
+  // Fetch site images if not already loaded
+  useEffect(() => {
+    if (!isImagesLoaded) {
+      dispatch(fetchAllSiteImages())
+    }
+  }, [dispatch, isImagesLoaded])
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -96,6 +108,9 @@ function SignIn() {
     }
   }
 
+  // Get the login page image from database, fallback to bg image
+  const loginPageImage = images?.loginPage || bg
+
   // if suspended we now lock the form rather than the page
   // if (showError) {
   //   return <NotAuthorized errMSG={errorMsg} />
@@ -103,45 +118,57 @@ function SignIn() {
 
   return (
     <>
-      <div className="signin-container">
-        <section className="login-form-section">
-          <div className="login-wrap">
-            <div className="holding-box holding-box-left">
-              <h1 className="signin-h1">
+      <div className='signin-container'>
+        <img
+          src={loginPageImage}
+          className='sign-in-img'
+          alt='Sign in page background'
+          onError={(e) => {
+            // Fallback to bg image if database image fails to load
+            if (e.target.src !== bg) {
+              e.target.src = bg
+            }
+          }}
+        />
+        <div className='sign-in-overlay'></div>
+        <section className='login-form-section'>
+          <div className='login-wrap'>
+            <div className='holding-box holding-box-left'>
+              <h1 className='signin-h1'>
                 <p>
-                  <i className="fa-solid fa-user"></i> sign in here
+                  <i className='fa-solid fa-user'></i> sign in here
                 </p>
-                <p className="login-title-2">
-                  login to your <span className="login-acount">account</span>{' '}
+                <p className='login-title-2'>
+                  login to your <span className='login-acount'>account</span>{' '}
                 </p>
               </h1>
             </div>
 
-            <div className="holding-box login-holding-box">
-              <form onSubmit={onSubmit} className="login-form">
-                {showError && <div className="alert-login">{errorMsg}</div>}
-                <div className="form-group login-form-group">
+            <div className='holding-box login-holding-box'>
+              <form onSubmit={onSubmit} className='login-form'>
+                {showError && <div className='alert-login'>{errorMsg}</div>}
+                <div className='form-group login-form-group'>
                   <input
-                    type="email"
-                    id="email"
+                    type='email'
+                    id='email'
                     value={email}
                     onChange={onChange}
-                    className="form-input  form-input-login"
-                    name="email"
-                    placeholder="Enter Email"
+                    className='form-input  form-input-login'
+                    name='email'
+                    placeholder='Enter Email'
                     // required
                   />
                 </div>
-                <div className="form-group login-form-group ">
+                <div className='form-group login-form-group '>
                   <input
                     type={passwordType}
-                    id="password"
+                    id='password'
                     value={password}
                     onChange={onChange}
-                    className="form-input form-input-login"
-                    name="password"
-                    placeholder="Enter Password"
-                    autoComplete="on"
+                    className='form-input form-input-login'
+                    name='password'
+                    placeholder='Enter Password'
+                    autoComplete='on'
                     // required
                   />
                   <i
@@ -149,8 +176,8 @@ function SignIn() {
                     className={`view-password ${passwordClass}`}
                   ></i>
                 </div>
-                <div className="form-group login-form-group form-btn-container">
-                  <button className="form-btn login-btn">log me in</button>
+                <div className='form-group login-form-group form-btn-container'>
+                  <button className='form-btn login-btn'>log me in</button>
                 </div>
                 {/* <div className="forgot-pw-div">
                   <button type="button" className="forgot-pw-btn">
@@ -160,8 +187,7 @@ function SignIn() {
               </form>
             </div>
           </div>
-
-          <div className="holding-box"></div>
+          <div className='holding-box'></div>
         </section>
       </div>
     </>

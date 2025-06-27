@@ -37,6 +37,12 @@ app.use('/api/admin', require('./routes/adminRoutes'))
 app.use('/api/emails', require('./routes/emailRoutes'))
 app.use('/api/msg', require('./routes/msgRoutes'))
 
+app.use('/api/site', require('./routes/siteRoutes'))
+
+// app.get('/api/site/test', (req, res) => {
+//   res.json({ msg: 'Site routes working' })
+// })
+
 // error middleware
 app.use(errorHandler)
 

@@ -6,6 +6,7 @@ import taskReducer from '../features/tasks/taskSlice'
 import adminReducer from '../features/admin/adminSlice'
 import userReducer from '../features/users/userSlice'
 import msgReducer from '../features/messages/msgSlice'
+import siteReducer from '../features/site/siteSlice'
 
 // Combine all reducers
 const appReducer = combineReducers({
@@ -15,6 +16,7 @@ const appReducer = combineReducers({
   admin: adminReducer,
   user: userReducer,
   msg: msgReducer,
+  site: siteReducer,
 })
 
 // Create a root reducer

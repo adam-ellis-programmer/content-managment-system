@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
 import { register, sendWelcomeEmails } from '../features/auth/authSlice'
+import { fetchAllSiteImages } from '../features/site/siteSlice' // Add this import
 import { formatedDOB, getDate, scrollTop } from '../utils'
 import { emailSignUp } from '../features/users/userSlice'
 
@@ -13,6 +14,7 @@ function Register() {
 
     return () => {}
   }, [])
+
   // font awesome icon references
   const eyeOff = 'fa-solid fa-eye'
   const eyeOn = 'fa-solid fa-eye-slash'
@@ -38,11 +40,31 @@ function Register() {
     year: '2025',
     tier: 'free',
   })
-  const { name, email, password, password2, day, year, month, terms, emailList, tier } =
-    formData
+  const {
+    name,
+    email,
+    password,
+    password2,
+    day,
+    year,
+    month,
+    terms,
+    emailList,
+    tier,
+  } = formData
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  // Get site images from Redux store
+  const { images, isImagesLoaded } = useSelector((state) => state.site)
+
+  // Fetch site images if not already loaded
+  useEffect(() => {
+    if (!isImagesLoaded) {
+      dispatch(fetchAllSiteImages())
+    }
+  }, [dispatch, isImagesLoaded])
 
   // Refs to handle focus
   const monthInputRef = useRef(null)
@@ -181,73 +203,89 @@ function Register() {
     }))
   }
 
+  // Get the register page image from database
+  const registerPageImage = images?.registerPage || ''
+
   return (
     <>
-      <div className="register-page-container">
-        <section className="register-heading">
-          <h1 className="register-h1">
+      <div className='register-page-container'>
+        <div className="register-overlay"></div>
+        <img
+          className='register-bg-img'
+          src={registerPageImage}
+          alt='Register page background'
+          onError={(e) => {
+            // Hide image if it fails to load
+            e.target.style.display = 'none'
+          }}
+          style={{
+            display: registerPageImage ? 'block' : 'none',
+          }}
+        />
+        <section className='register-heading'>
+          <h1 className='register-h1'>
             <p>
-              <i className="fa-solid fa-right-to-bracket register-arrow"></i> register
-              here
+              <i className='fa-solid fa-right-to-bracket register-arrow'></i>{' '}
+              register here
             </p>
             <p>
-              for your <span className="free-span">free</span> account
+              for your <span className='free-span'>free</span> account
             </p>
           </h1>
         </section>
 
-        <section className="register-form-section">
-          <div className="holding-box register-form-holding-box">
-            <form onSubmit={onSubmit} className="register-form">
-              <div className="form-group">
-                {showError && <div className="alert-login">{errorMsg}</div>}
+        <section className='register-form-section'>
+          <div className='holding-box register-form-holding-box'>
+            <form onSubmit={onSubmit} className='register-form'>
+              <div className='form-group'>
+                {showError && <div className='alert-login'>{errorMsg}</div>}
                 <input
-                  type="text"
-                  id="name"
+                  type='text'
+                  id='name'
                   value={name}
                   onChange={onChange}
-                  className="form-input register-input"
-                  name="name"
-                  placeholder="Enter Name"
+                  className='form-input register-input'
+                  name='name'
+                  placeholder='Enter Name'
                 />
               </div>
-              <div className="form-group">
+              <div className='form-group'>
                 <input
-                  type="text"
-                  id="email"
+                  type='text'
+                  id='email'
                   value={email}
                   onChange={onChange}
-                  className="form-input register-input"
-                  name="email"
-                  placeholder="Enter Email"
+                  className='form-input register-input'
+                  name='email'
+                  placeholder='Enter Email'
                 />
               </div>
-              <div className="form-group register-password-wrap">
+              <div className='form-group register-password-wrap'>
                 <input
                   type={passwordType1}
-                  id="password"
+                  id='password'
                   value={password}
                   onChange={onChange}
-                  className="form-input register-input"
-                  name="password"
-                  placeholder="Enter Password"
-                  autoComplete="on"
+                  className='form-input register-input'
+                  name='password'
+                  placeholder='Enter Password'
+                  autoComplete='on'
                 />
                 <i
                   onClick={() => handleShowPassword(1)}
                   className={`view-password ${passwordClass1}`}
                 ></i>
               </div>
-              <div className="form-group register-password-wrap">
+              <div className='form-group register-password-wrap'>
                 <input
                   type={passwordType2}
-                  id="password2"
+                  id='password2'
                   value={password2}
                   onChange={onChange}
-                  className="form-input register-input"
-                  name="password2"
-                  placeholder="Confirm password"
-                  autoComplete="on"
+                  className='form-input register-input'
+                  name='password2'
+                  placeholder='Confirm password'
+                  autoComplete='on'
                 />
                 <i
                   onClick={() => handleShowPassword(2)}
@@ -255,85 +293,88 @@ function Register() {
                 ></i>
               </div>
 
-              <div className="form-group register-dob-wrap">
-                <div className="register-dob-container">
-                  <label className="dob-label" htmlFor="">
+              <div className='form-group register-dob-wrap'>
+                <div className='register-dob-container'>
+                  <label className='dob-label' htmlFor=''>
                     date of birth
                   </label>
                   <input
                     onChange={onChange}
-                    name="day"
-                    type="text"
-                    className="dob-input"
-                    placeholder="dd"
+                    name='day'
+                    type='text'
+                    className='dob-input'
+                    placeholder='dd'
                     value={day.slice(0, 2)}
-                    maxLength="2"
+                    maxLength='2'
                   />
                   <input
                     ref={monthInputRef} // Use ref to focus on month
                     onChange={onChange}
-                    name="month"
-                    type="text"
-                    className="dob-input"
-                    placeholder="mm"
+                    name='month'
+                    type='text'
+                    className='dob-input'
+                    placeholder='mm'
                     value={month.slice(0, 2)}
-                    maxLength="2"
+                    maxLength='2'
                   />
                   <input
                     ref={yearInputRef} // Use ref to focus on year
                     onChange={onChange}
-                    name="year"
-                    type="text"
-                    className="dob-input"
-                    placeholder="yy yy"
+                    name='year'
+                    type='text'
+                    className='dob-input'
+                    placeholder='yy yy'
                     value={year.slice(0, 4)}
-                    maxLength="4"
+                    maxLength='4'
                   />
                 </div>
               </div>
 
-              <div className="form-group register-dob-wrap">
-                <label htmlFor="reg-terms-check" className="reg-check-label">
+              <div className='form-group register-dob-wrap'>
+                <label htmlFor='reg-terms-check' className='reg-check-label'>
                   <input
                     onChange={onChange}
-                    className="reg-terms-check"
-                    type="checkbox"
-                    name="terms"
+                    className='reg-terms-check'
+                    type='checkbox'
+                    name='terms'
                     checked={terms}
-                    id="reg-terms-check"
+                    id='reg-terms-check'
                     value={terms}
                   />
-                  <span className="reg-email-span">accept terms</span>
+                  <span className='reg-email-span'>accept terms</span>
                 </label>
-                <label htmlFor="reg-email-check" className="reg-check-label">
+                <label htmlFor='reg-email-check' className='reg-check-label'>
                   <input
                     onChange={onChange}
-                    className="reg-email-check"
-                    type="checkbox"
-                    name="emailList"
+                    className='reg-email-check'
+                    type='checkbox'
+                    name='emailList'
                     checked={emailList}
-                    id="reg-email-check"
+                    id='reg-email-check'
                     value={emailList}
                   />
-                  <span className="reg-email-span">join our mailing list</span>
+                  <span className='reg-email-span'>join our mailing list</span>
                 </label>
               </div>
 
-              <div className="form-group tier-group">
-                <select onChange={handleSelectChange} className="register-tier-select">
-                  <option value="choose">choose subscription tier</option>
-                  <option value="free">free</option>
-                  <option value="prem">premium</option>
+              <div className='form-group tier-group'>
+                <select
+                  onChange={handleSelectChange}
+                  className='register-tier-select'
+                >
+                  <option value='choose'>choose subscription tier</option>
+                  <option value='free'>free</option>
+                  <option value='prem'>premium</option>
                 </select>
-                <i className="fa-solid fa-chevron-down tier-chev"></i>
+                <i className='fa-solid fa-chevron-down tier-chev'></i>
               </div>
-              <div className="form-group form-btn-container">
-                <button className="form-btn register-btn">register me</button>
+              <div className='form-group form-btn-container'>
+                <button className='form-btn register-btn'>register me</button>
               </div>
             </form>
           </div>
 
-          <div className="holding-box"></div>
+          <div className='holding-box'></div>
         </section>
       </div>
     </>

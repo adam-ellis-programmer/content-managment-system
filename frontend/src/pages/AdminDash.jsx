@@ -126,17 +126,18 @@ function AdminDash() {
             </Link>
           </div>
 
-          {/* <div className="admin-dash-item">
-            <Link className="admin-link-btn" to="/msg-page">
-              <div className="admin-link-box link-box-view-messages ">
+          <div className="admin-dash-item">
+            <Link className="admin-link-btn" to="/site-admin-page">
+              <div className="admin-link-box link-box-site-admin ">
                 <p className="admin-link-p">
-                  messages
-                  <span className="admin-link-span">view</span>
+                  site admin
+                  <span className="admin-link-span">manage</span>
                 </p>
-                <i className="email-icon fa-solid fa-message"></i>
+                <i className="email-icon fa-solid fa-screwdriver-wrench"></i>
+                {/* <i className="email-icon fa-solid fa-message"></i> */}
               </div>
             </Link>
-          </div> */}
+          </div>
         </div>
       </section>
     </>

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-// Remember: Structure [] is expectiong an array
+// Structure [] is expectiong an array
 const blogSchema = mongoose.Schema(
   {
     userID: {
@@ -57,12 +57,13 @@ const blogSchema = mongoose.Schema(
       default: 0,
     },
 
-    //  why imageData is { } and arrays are []
+    // objet of objects
     imageData: {
       heroImage: {
         url: { type: String },
         id: { type: String },
       },
+      // array of objects
       imageUrls: [
         {
           url: { type: String },
