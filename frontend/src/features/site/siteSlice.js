@@ -83,20 +83,22 @@ const siteSlice = createSlice({
         state.isLoading = false
         state.isImagesLoaded = true
         state.error = null
-
+        
         // Reset images first
         state.images = { ...initialState.images }
+        console.log(state.images)
 
         // Map the fetched images to their respective pages
         if (action.payload.success && action.payload.images) {
           action.payload.images.forEach((image) => {
             if (state.images.hasOwnProperty(image.imgPlace)) {
+              // console.log('IMAGE PLACE-->', image)
               state.images[image.imgPlace] = image.imageUrl
             }
           })
-        } 
+        }
       })
-      
+
       .addCase(fetchAllSiteImages.rejected, (state, action) => {
         state.isLoading = false
         state.isImagesLoaded = false
