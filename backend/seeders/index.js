@@ -3,9 +3,14 @@ require('dotenv').config()
 
 const mongoose = require('mongoose')
 const { seedBlogs } = require('./blogSeeder')
+const { emailSignupData } = require('./emailSeedData')
+const { seedEmailSignupData } = require('./emailSignupSeeder')
 
 // Import your models
-const Blog = require('../models/blogModel')
+const BlogModel = require('../models/blogModel')
+const emailModel = require('../models/emailModel')
+const sentEmailModel = require('../models/sendEmailModel')
+const { seedSentEmails } = require('./sentEmailSeeder')
 
 // Database connection
 const connectDB = async () => {
@@ -35,7 +40,7 @@ const runDeSeeder = async () => {
 
     // Remove seeded blog data
     console.log('🧹 Removing seeded blogs...')
-    const deletedBlogs = await Blog.deleteMany({
+    const deletedBlogs = await BlogModel.deleteMany({
       userID: new mongoose.Types.ObjectId('683c59dd901877b95558b7b8'), // Only delete demo user blogs
     })
 
@@ -50,6 +55,50 @@ const runDeSeeder = async () => {
   }
 }
 
+// Email seeder function
+const runEmailSeeder = async () => {
+  try {
+    console.log('📧 Starting email signup data seeding...')
+
+    // Connect to database
+    await connectDB()
+
+    // Run email seeder
+    console.log('📝 Seeding email signup data...')
+    const insertedData = await seedEmailSignupData(emailModel)
+
+    console.log(
+      `✅ Successfully seeded ${insertedData.length} email signup records!`
+    )
+    process.exit(0)
+  } catch (error) {
+    console.error('❌ Email seeding failed:', error)
+    process.exit(1)
+  }
+}
+
+// Run the sent email seeder
+async function runSentEmailSeeder() {
+  try {
+    console.log('📧 Starting email signup data seeding...')
+
+    // Connect to database
+    await connectDB()
+
+    // Run email seeder
+    console.log('📝 Seeding email signup data...')
+    const insertedData = await seedSentEmails(sentEmailModel)
+
+    console.log(
+      `✅ Successfully seeded ${insertedData.length} email signup records!`
+    )
+    process.exit(0)
+  } catch (error) {
+    console.error('❌ Email seeding failed:', error)
+    process.exit(1)
+  }
+}
+
 // Main seeder function
 const runSeeders = async () => {
   try {
@@ -60,7 +109,7 @@ const runSeeders = async () => {
 
     // Run blog seeder
     console.log('📝 Seeding blogs...')
-    await seedBlogs(Blog)
+    await seedBlogs(BlogModel)
 
     console.log('✅ All seeders completed successfully!')
     process.exit(0)
@@ -78,9 +127,14 @@ const command = args[0]
 if (require.main === module) {
   if (command === 'clear') {
     runDeSeeder()
+  } else if (command === 'emails') {
+    runEmailSeeder()
+  } else if (command === 'sent-emails') {
+    //...
+    runSentEmailSeeder()
   } else {
     runSeeders()
   }
 }
 
-module.exports = { runSeeders, runDeSeeder }
+module.exports = { runSeeders, runDeSeeder, runEmailSeeder }

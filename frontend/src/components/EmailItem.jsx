@@ -36,37 +36,40 @@ function EmailItem({ data: { _id, name, email, date, time }, index }) {
     dispatch(setShowEmailModal({ boolean: !showEmailModal, id }))
   }
   return (
-    <div className="email-item">
-      <div className="email-item-inner-div">
-        <span className="email-item-label">item</span>
+    <div className='email-item'>
+      <div className='email-item-inner-div'>
+        <span className='email-item-label'>item</span>
         <p>{index + 1}</p>
       </div>
-      <div className="email-item-inner-div">
-        <span className="email-item-label">name</span>
+      <div className='email-item-inner-div'>
+        <span className='email-item-label'>name</span>
         <p>{name}</p>
       </div>
-      <div className="email-item-inner-div">
-        <span className="email-item-label">email</span>
-        <p className="email-p" onClick={(e) => handleCopy({ e, email })}>
+      <div className='email-item-inner-div'>
+        <span className='email-item-label'>email</span>
+        <p className='email-p' onClick={(e) => handleCopy({ e, email })}>
           {email}
           {/* to test remove the conditinal render and see them all lined up */}
           {/* virtual dom , state changes, diffing, Reconciliation */}
-          {showSuccess && <span className="success-div"> copied!</span>}
+          {showSuccess && <span className='success-div'> copied!</span>}
         </p>
       </div>
-      <div className="email-item-inner-div">
-        <span className="email-item-label">date</span>
+      <div className='email-item-inner-div'>
+        <span className='email-item-label'>date</span>
         <p>{date}</p>
       </div>
-      <div className="email-item-inner-div">
-        <span className="email-item-label">time</span>
+      <div className='email-item-inner-div'>
+        <span className='email-item-label'>time</span>
         <p>{time}</p>
       </div>
-      <div className="email-item-inner-div">
-        <span className="email-item-label">email</span>
+      <div className='email-item-inner-div'>
+        <span className='email-item-label'>email</span>
         <p>
-          <button onClick={() => handleToggle(_id)} className="admin-send-email-btn">
-            <i className="fa-solid fa-paper-plane send-email-icon"></i>
+          <button
+            onClick={() => handleToggle(_id)}
+            className='admin-send-email-btn'
+          >
+            <i className='fa-solid fa-paper-plane send-email-icon'></i>
           </button>
         </p>
       </div>

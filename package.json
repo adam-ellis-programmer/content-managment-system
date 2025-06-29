@@ -9,7 +9,9 @@
     "client": "npm start --prefix frontend",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
     "seed": "node backend/seeders/index.js",
-    "seed:clear": "node backend/seeders/index.js clear"
+    "seed:clear": "node backend/seeders/index.js clear",
+    "seed:emailSignup": "node backend/seeders/index.js emails",
+    "seed:sent-emails": "node backend/seeders/index.js sent-emails"
   },
   "author": "Adam Ellis",
   "license": "MIT",
