@@ -47,7 +47,7 @@ function AdminDash() {
   return (
     <>
       <section className="admin-dash-header-div">
-        <span>welcome {user && user.name} to your admin dash</span>
+        <h1 className='admin-dash-h1'>Your admin dash <i className="admin-dash-hammer fa-solid fa-hammer"></i></h1>
       </section>
 
       <section className="page-container admin-dash-page-container">

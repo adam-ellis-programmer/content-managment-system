@@ -1304,6 +1304,7 @@ ul {
   min-height: calc(100vh - 100px);
 }
 
+
 .admin-dash-page-container {
   min-height: calc(100vh - 150px);
 }
@@ -2924,14 +2925,20 @@ select {
 .admin-dash-header-div {
   /* border: 1px solid; */
   text-align: center;
-  margin-top: 1rem;
-  margin-bottom: 3rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
   font-size: 1.6rem;
   font-family: 'Saira', sans-serif;
   font-weight: 400;
   line-height: 1;
 }
 
+.admin-dash-h1{
+  font-weight: 500;
+}
+.admin-dash-hammer{
+  margin-left: 1rem;
+}
 .admin-dash-header-div span {
   position: relative;
   cursor: default;

@@ -210,12 +210,12 @@ const PageImageControl = ({ page }) => {
 
       {/* Error Display */}
       {error && <div style={styles.errorMessage}>Error: {error}</div>}
-
+      {/* 
       <div className='test-btn-wrap'>
         <button onClick={handleTestApi} style={styles.testButton}>
           test api
         </button>
-      </div>
+      </div> */}
     </div>
   )
 }
